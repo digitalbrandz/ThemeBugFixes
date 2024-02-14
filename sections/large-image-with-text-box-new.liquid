@@ -5,7 +5,7 @@
     }
   }
 {% endstyle %}
-<div style="position:relative">
+<div id="{{ section.settings.customid }}" style="position:relative">
 <div
   data-section-id="{{ section.id }}"
   data-section-type="background-image"
@@ -99,6 +99,11 @@
     "name": "Large image with text box",
     "class": "index-section--flush",
     "settings": [
+      {
+        "id": "customid",
+        "type": "text",
+        "label": "Custom Css ID"
+ },
       {
         "type": "text",
         "id": "subtitle",
