@@ -24,28 +24,6 @@
   background-attachment: fixed;
 }
 
-/* ===== Scrollbar CSS ===== */
-/* Firefox */
-* {
-  scrollbar-width: auto;
-  scrollbar-color: #eea0cd #ffffff;
-}
-
-/* Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-  width: 16px;
-}
-
-*::-webkit-scrollbar-track {
-  background: #ffffff;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: #d9b1c8;
-  border-radius: 10px;
-  border: 3px solid #ffffff;
-}
-
 /* add signature to header */
 @media screen and (min-width: 990px) {
   .header--middle-left.menu_right {
