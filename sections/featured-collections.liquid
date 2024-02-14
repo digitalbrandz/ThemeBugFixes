@@ -7,6 +7,8 @@
 
 {% if section.settings.divider %}<div class="section--divider">{% endif %}
 
+<div id="{% if section.settings.customid != blank %}{{ section.settings.customid }}{% else %}{{ section.id }}{% endif %}">
+
 <div class="page-width {% if section.blocks.size == 3 %}last-col-full{% endif %}">
   {% if section.settings.title != blank %}
     <div class="section-header">
@@ -54,7 +56,7 @@
 
   </div>
 </div>
-
+</div>
 {% if section.settings.divider %}</div>{% endif %}
 
 
@@ -64,6 +66,11 @@
     "class": "index-section",
     "max_blocks": 15,
     "settings": [
+      {
+        "id": "customid",
+        "type": "text",
+        "label": "Custom Css ID"
+ },
       {
         "type": "text",
         "id": "title",
