@@ -1,0 +1,465 @@
+.fs-form .fs-fields > li {
+    &.skip {
+      visibility: hidden;
+      overflow: hidden;
+      height: 0px;
+      width: 0px;
+      padding: 0px;
+      margin: 0px;
+    }
+  
+    &.video {
+      label {
+        padding: 0 5px 0em 0;
+        margin-bottom: 0.2em;
+        font-size: 0.7em;
+      }
+  
+      .video-wrap {
+        width: 100%;
+        position: relative;
+        height: 0;
+        margin-bottom: 1rem;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+  
+        iframe, video {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+  
+        + div {
+          width: 100%;
+          text-align: center;
+        }
+      }
+  
+      a {
+        background-color: rgba(255, 255, 255, 0.13);
+        font-family: "Open Sans", sans-serif;
+        font-weight: bold;
+        border-radius: 65px;
+        color: #fff;
+        transition: background-color 0.3s;
+        font-size: 100%;
+        display: inline-block;
+        padding: 11px 40px;
+        line-height: 1;
+      }
+    }
+  
+    .option {
+      background-color: #17b976;
+      font-family: "Open Sans", sans-serif;
+      font-weight: bold;
+      border-radius: 65px;
+      color: #fff;
+      transition: background-color 0.3s;
+      font-size: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 50px;
+      line-height: 1;
+      margin-top: 35px;
+      float: left;
+      font-size: 80%;
+    }
+  
+    .fs-radio-custom {
+      display: flex;
+      flex-flow: wrap;
+      align-items: stretch;
+  
+      span label {
+        &.smaller {
+          font-size: 70%;
+        }
+  
+        background-color: rgba(0, 0, 0, 0.04);
+        border-radius: 65px;
+        color: #000;
+        transition: background-color 0.3s;
+        font-size: 100%;
+        padding: 11px 15px;
+        line-height: 1;
+        margin: 0 0 1em;
+      }
+  
+      &.onerow {
+        flex-flow: nowrap;
+      }
+  
+      &.smallbuttons {
+        flex-flow: column;
+  
+        span {
+          max-width: none;
+          width: auto;
+  
+          label {
+            padding: 15px 15px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serifOS;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  
+    .fs-checkbox-custom {
+      display: flex;
+      flex-flow: wrap;
+  
+      span {
+        display: block;
+        position: relative;
+        text-align: center;
+        font-weight: 700;
+        font-size: 50%;
+        margin: 0 15px 10px 0;
+  
+        label {
+          padding: 12px 25px 12px 80px;
+          width: 100%;
+          display: block;
+          text-align: left;
+          color: #3C454C;
+          cursor: pointer;
+          position: relative;
+          z-index: 2;
+          transition: color 200ms ease-in;
+          overflow: hidden;
+          background: #eee;
+          border-radius: 45px;
+  
+          &:before {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            content: "";
+            background-color: #5562eb;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale3d(1, 1, 1);
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            z-index: -1;
+          }
+  
+          &:after {
+            width: 32px;
+            height: 32px;
+            content: "";
+            border: 2px solid #D1D7DC;
+            background-color: #fff;
+            background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
+            background-repeat: no-repeat;
+            background-position: 2px 3px;
+            border-radius: 50%;
+            z-index: 2;
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            transition: background-color 200ms ease-in, border-color 200ms ease-in;
+          }
+        }
+  
+        input {
+          width: 32px;
+          height: 32px;
+          order: 1;
+          z-index: 2;
+          position: absolute;
+          right: 30px;
+          top: 50%;
+          transform: translateY(-50%);
+          cursor: pointer;
+          visibility: hidden;
+  
+          &:checked ~ label {
+            color: #fff;
+  
+            &:before {
+              transform: translate(-50%, -50%) scale3d(56, 56, 1);
+              opacity: 1;
+            }
+  
+            &:after {
+              background-color: #54E0C7;
+              border-color: #54E0C7;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .fs-confirmed {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  
+    .advancedform-confirmation {
+      visibility: visible;
+      pointer-events: auto;
+    }
+  }
+  
+  .confetti {
+    position: absolute;
+  
+    &:nth-child(1) {
+      width: 12px;
+      height: 12px;
+      left: 12px;
+      top: 16px;
+    }
+  
+    &:nth-child(2) {
+      width: 18px;
+      height: 18px;
+      left: 168px;
+      top: 84px;
+    }
+  
+    &:nth-child(3) {
+      width: 10px;
+      height: 10px;
+      left: 32px;
+      top: 162px;
+    }
+  
+    &:nth-child(4) {
+      width: 20px;
+      height: 20px;
+      left: 82px;
+      top: -12px;
+    }
+  
+    &:nth-child(5) {
+      width: 14px;
+      height: 14px;
+      left: 125px;
+      top: 162px;
+    }
+  
+    &:nth-child(6) {
+      width: 10px;
+      height: 10px;
+      left: 16px;
+      top: 16px;
+    }
+  }
+  
+  .checkmark {
+    position: relative;
+    padding: 30px;
+    animation: checkmark 5.6s cubic-bezier(0.42, 0, 0.275, 1.155) both;
+    display: inline-block;
+  }
+  
+  .checkmark__check {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    transform: translate3d(-50%, -50%, 0);
+    fill: #fff;
+  }
+  
+  .checkmark__back {
+    animation: rotate 35s linear both infinite;
+  }
+  
+  .fs-form.advancedform-confirmation {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    top: 0px;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    top: 0px;
+  
+    > * {
+      opacity: 0;
+      animation-fill-mode: forwards;
+    } 
+  
+    .subline {
+      text-align: center;
+      margin-top: 6px;
+    }
+  
+    &.showanim {
+      opacity: 1;
+      pointer-events: auto;
+  
+      h2 {
+        animation-name: fadeInLeft;
+        animation-duration: 0.3s;
+        animation-delay: 0.3s;
+      }
+  
+      .subline {
+        animation-name: fadeInLeft;
+        animation-duration: 0.3s;
+        animation-delay: 0.5s;
+      }
+  
+      .successAnimation {
+        animation-name: fadeInUp;
+        animation-duration: 0.3s;
+        animation-delay: 0.6s;
+      }
+  
+      .confetti {
+        animation: grow 1.4s cubic-bezier(0.42, 0, 0.275, 1.155) both;
+        transform: scale(0);
+  
+        &:nth-child(1) {
+          animation-delay: 1s;
+        }
+  
+        &:nth-child(2) {
+          animation-delay: 1.7s;
+        }
+  
+        &:nth-child(3) {
+          animation-delay: 2.4s;
+        }
+  
+        &:nth-child(4) {
+          animation-delay: 3.1s;
+        }
+  
+        &:nth-child(5) {
+          animation-delay: 3.8s;
+        }
+  
+        &:nth-child(6) {
+          animation-delay: 4.5s;
+        }
+      }
+    }
+  }
+  
+  @media (min-width: 1600px) {
+    .fs-form .fs-fields > li.video {
+      transform: translateY(-14%);
+    }
+  }
+  
+  @media (max-width: 1600px) {
+    .fs-form .fs-fields > li.video {
+      transform: translateY(-25%);
+  
+      .bigbuttons {
+        max-width: 85%;
+      }
+  
+      a {
+        padding: 9px 40px;
+        font-size: 72%;
+      }
+    }
+  }
+  
+  @media (max-width: 52.5em) {
+    .fs-form .fs-fields > li {
+      &.video {
+        transform: translateY(5%);
+  
+        .bigbuttons {
+          max-width: 100%;
+        }
+  
+        label {
+          font-size: 0.8em;
+          line-height: normal;
+          margin-bottom: 0.7em;
+        }
+  
+        a {
+          padding: 12px 20px;
+          min-height: 45px;
+          line-height: 1;
+          margin: 0;
+          min-width: 60%;
+          font-size: 100%;
+        }
+      }
+  
+      .fs-radio-custom {
+        display: block;
+  
+        span {
+          width: auto;
+  
+          label.smaller {
+            font-size: 100%;
+          }
+        }
+  
+        &.onerow {
+          flex-flow: wrap;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .fs-form {
+      .fs-fields > li .fs-radio-custom.smallbuttons span {
+        font-size: 17px;
+      }
+  
+      &.advancedform-confirmation {
+        .subline {
+          font-size: 19px;
+          padding: 0 25px;
+        }
+  
+        h2 {
+          font-size: 31px;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 700px) {
+    .fs-form .fs-fields > li .fs-checkbox-custom span {
+      margin: 0 15px 2px 0;
+      font-size: 57%;
+  
+      label {
+        padding: 9px 25px 9px 45px;
+  
+        &:after {
+          width: 20px;
+          height: 20px;
+          background-position: -2px -4px;
+          left: 15px;
+        }
+      }
+    }
+  }
+  

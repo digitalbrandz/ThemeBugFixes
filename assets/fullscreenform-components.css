@@ -1,0 +1,884 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap");
+* {
+  box-sizing: border-box;
+}
+*:after, *:before {
+  box-sizing: border-box;
+}
+
+.clearfix:before {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+body.overview .formwrap {
+  overflow: auto;
+}
+
+.fullscreenform-section {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  position: relative;
+}
+
+.fs-container {
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  background: #fff;
+  font-weight: 400;
+  font-size: 1em;
+  font-family: "Raleway", Arial, sans-serif;
+}
+
+.fs-container div:empty {
+  display: block;
+}
+
+.fs-form-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  color: #000;
+}
+.fs-form-wrap .fs-container, .fs-form-wrap input, .fs-form-wrap textarea, .fs-form-wrap button, .fs-form-wrap select {
+  font-family: "Raleway", Arial, sans-serif;
+}
+
+/* Main form wrapper */
+.overview .fs-form-wrap {
+  height: auto;
+}
+
+/* Title */
+.fs-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 40px;
+  width: 100%;
+}
+.fs-title svg {
+  max-width: 130px;
+  height: auto;
+  margin: 0;
+}
+
+/* Form */
+.fs-form {
+  position: relative;
+  text-align: left;
+  font-size: 2.5em;
+}
+
+.no-js .fs-form {
+  padding: 0 0 6em 0;
+}
+
+/* Views (fullscreen and overview)*/
+.fs-form-full {
+  top: 32%;
+  margin: 0 auto;
+  width: 70%;
+  max-width: 960px;
+}
+
+.fs-message-error {
+  max-width: 960px;
+}
+
+.fs-form-overview {
+  padding: 2.5em 30% 6em;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  color: #3b3f45;
+  font-size: 1.2em;
+}
+.fs-form-overview .fs-fields::before {
+  display: block;
+  margin-bottom: 2.5em;
+  color: #3b3f45;
+  content: "Review & Submit";
+  font-weight: 700;
+  font-size: 1.85em;
+}
+
+/* Switch view animation (we hide the current view, switch the view class and show it again) */
+.fs-form.fs-show {
+  animation: animFadeIn 0.5s;
+}
+.fs-form.fs-show .fs-fields {
+  animation: animMove 0.5s;
+}
+@keyframes animFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes animMove {
+  from {
+    top: 100px;
+  }
+}
+/* we need to use top here because otherwise all our fixed elements will become absolute */
+/* Visibility control of elements */
+.fs-form-full .fs-fields > li, .fs-nav-dots, .fs-progress, .fs-numbers, button.fs-continue, .fs-message-error, .fs-message-final {
+  visibility: hidden;
+}
+
+.no-js .fs-form-full .fs-fields > li {
+  visibility: visible;
+}
+
+.fs-show {
+  visibility: visible !important;
+}
+
+/* Some general styles */
+.fs-form-wrap button {
+  border: none;
+  background: none;
+}
+.fs-form-wrap button[disabled] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.fs-form-wrap input:focus, .fs-form-wrap button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Hide the submit button */
+.fs-form .fs-submit {
+  display: none;
+}
+
+/* Fields */
+.fs-fields {
+  position: relative;
+  margin: 0 auto;
+  padding: 0;
+  top: 0;
+  list-style: none;
+}
+.fs-fields > li {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.fs-fields > li:hover {
+  z-index: 999;
+}
+
+.js .fs-form-full .fs-fields > li {
+  position: absolute;
+  width: 100%;
+}
+
+.fs-form-overview .fs-fields > li, .no-js .fs-form .fs-fields > li {
+  margin: 1em 0 2em;
+  padding: 0 0 2em 0;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Labels & info */
+.fs-fields > li label {
+  position: relative;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: inherit;
+  font-weight: 700;
+  font-size: 0.95em;
+}
+.fs-fields > li label.fs-field-label {
+  display: inline-block;
+  padding: 0 5px 1em 0;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.fs-form-full .fs-fields > li label[data-info]::after {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  content: "i";
+  vertical-align: top;
+  text-align: center;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 14px;
+  font-family: Georgia, serif;
+  line-height: 20px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.fs-form-full .fs-fields > li label[data-info]::before {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  padding: 0 0 10px;
+  min-width: 200px;
+  content: attr(data-info);
+  font-size: 0.4em;
+  color: #6a7b7e;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translate3d(0, -5px, 0);
+  pointer-events: none;
+}
+.fs-form-full .fs-fields > li label[data-info]:hover::before {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.fs-form-full .fs-fields > li label:hover ~ .fs-info {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.fs-form-full .fs-fields > li .fs-info:hover {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Inputs */
+.fs-fields input {
+  display: block;
+  margin: 0;
+  padding: 0 0 0.15em;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+  color: #b141b5;
+  text-overflow: ellipsis;
+  font-weight: bold;
+  font-size: 1.5em;
+  border-radius: 0;
+}
+.fs-fields input:invalid {
+  box-shadow: none;
+  /* removes red shadow in FF*/
+}
+
+.fs-form-overview .fs-fields input {
+  border-bottom-color: transparent;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.fs-fields [required] {
+  /*background-image: url(../img/abacusstar.svg);*/
+  background-position: top right;
+  background-size: 18px;
+  background-repeat: no-repeat;
+}
+
+.fs-form-overview .fs-fields input {
+  font-size: 1.2em;
+}
+.fs-form-overview .fs-fields input:focus {
+  background-color: #faf4ff;
+  /* Fixes chrome bug with placeholder */
+}
+
+.fs-fields .fs-radio-custom input[type=radio] {
+  position: absolute;
+  display: block;
+  margin: 30px auto 20px;
+  margin: 0 auto 20px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.fs-fields > li .fs-radio-custom span {
+  position: relative;
+  text-align: center;
+  font-weight: 700;
+  font-size: 50%;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0 30px 0 0;
+}
+.fs-fields > li .fs-radio-custom span label {
+  color: rgba(0, 0, 0, 0.4);
+  transition: color 0.3s;
+}
+.fs-fields > li .fs-radio-custom.bigbuttons {
+  display: flex;
+}
+.fs-fields > li .fs-radio-custom.bigbuttons span label {
+  background-color: rgba(113, 113, 113, 0.13);
+  color: #000;
+  border-radius: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 60px;
+  font-size: 1.2em;
+  line-height: 1;
+  transition: background-color 0.3s;
+}
+
+.fs-form-overview .fs-fields > li .fs-radio-custom span {
+  max-width: 140px;
+  font-size: 75%;
+}
+
+.fs-fields > li .fs-radio-custom label {
+  display: block;
+  padding-top: 100%;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.fs-fields .fs-radio-custom label::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-position: 50% 0%;
+  background-size: 85%;
+  background-repeat: no-repeat;
+  content: "";
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  transform: translate(-50%, -50%);
+}
+.fs-fields .fs-radio-custom label.radio-mobile::after {
+  background-image: url(../img/mobile.svg);
+}
+.fs-fields .fs-radio-custom label.radio-social::after {
+  background-image: url(../img/social.svg);
+}
+.fs-fields .fs-radio-custom label.radio-conversion::after {
+  background-image: url(../img/conversion.svg);
+}
+.fs-fields .fs-radio-custom label:hover::after {
+  opacity: 1;
+}
+.fs-fields input[type=radio]:focus + label::after, .fs-fields input[type=radio]:checked + label::after {
+  opacity: 1;
+}
+.fs-fields .fs-radio-custom input[type=radio]:checked + label {
+  color: #ffffff;
+  background: #c24ddf;
+}
+
+.fs-form-overview .fs-fields .fs-radio-custom input[type=radio]:checked + label {
+  color: #ffffff;
+}
+
+.fs-fields textarea {
+  padding: 0.25em;
+  width: 100%;
+  height: 200px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+  color: #b141b5;
+  font-weight: 700;
+  font-size: 0.85em;
+  resize: none;
+}
+
+.fs-form-overview .fs-fields textarea {
+  height: 100px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.fs-fields textarea:focus {
+  outline: none;
+}
+
+.fs-form-overview .fs-fields textarea {
+  padding: 0;
+  border-color: transparent;
+}
+.fs-form-overview .fs-fields textarea:focus {
+  background: #fff4f4;
+}
+
+.fs-fields select {
+  width: 100%;
+  font-size: 1em;
+  background-position: 98% center;
+}
+.fs-fields select[required] {
+  width: 100%;
+  font-size: 1em;
+  background-position: 98% center;
+}
+
+.fs-form div.cs-select.cs-skin-boxes {
+  display: block;
+}
+
+.fs-form-overview .cs-skin-boxes > span {
+  border-radius: 5px;
+  width: 90px;
+  height: 70px;
+  font-size: 0.8em;
+}
+.fs-form-overview .cs-skin-boxes > span::before {
+  padding-top: 50px;
+  box-shadow: 0 20px 0 #292c30, inset 0 -5px #292c30;
+}
+
+.fs-fields input.fs-mark {
+  padding-left: 1em;
+  background-image: url(../img/dollar.svg);
+  background-position: 0% 0.15em;
+  background-size: auto 75%;
+  background-repeat: no-repeat;
+}
+.fs-fields input.fs-mark[required] {
+  background-image: url(../img/dollar.svg), url(../img/abacusstar.svg);
+  background-position: 0% 0.15em, top right;
+  background-size: auto 75%, 18px;
+  background-repeat: no-repeat;
+}
+.fs-fields input::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.1);
+}
+.fs-fields textarea::-webkit-input-placeholder, .fs-fields input:-moz-placeholder, .fs-fields textarea:-moz-placeholder, .fs-fields input::-moz-placeholder, .fs-fields textarea::-moz-placeholder, .fs-fields input:-ms-input-placeholder, .fs-fields textarea:-ms-input-placeholder {
+  color: rgba(0, 0, 0, 0.1);
+}
+.fs-fields input:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+/* placeholder */
+/* Hide placeholder when focused in Webkit browsers */
+/* Dot navigation */
+.fs-nav-dots {
+  position: absolute;
+  top: 50%;
+  right: 60px;
+  left: auto;
+  transform: translateY(-50%);
+}
+.fs-nav-dots button {
+  position: relative;
+  display: block;
+  padding: 0;
+  margin: 16px 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: transparent;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.fs-nav-dots button::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  content: "";
+  text-indent: 0;
+  backface-visibility: hidden;
+}
+.fs-nav-dots button::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  content: "";
+  text-indent: 0;
+  backface-visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.4);
+  transform: perspective(1000px) rotate3d(0, 1, 0, 180deg);
+}
+.fs-nav-dots button.fs-dot-current {
+  transform: perspective(1000px) rotate3d(0, 1, 0, 180deg);
+}
+.fs-nav-dots button:hover::before, .fs-nav-dots button.fs-dot-current::before {
+  background: #b141b5;
+}
+
+/* Progress bar */
+.fs-progress {
+  position: fixed;
+  top: 0;
+  width: 0%;
+  height: 0.5em;
+  background: #b141b5;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Number indicator */
+.fs-numbers {
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+  color: rgba(0, 0, 0, 0.4);
+  margin: 40px;
+  width: 3em;
+  font-weight: 700;
+  font-size: 2em;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  cursor: default;
+}
+.fs-numbers:after {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  content: "/";
+  font-weight: 300;
+  opacity: 0.4;
+  left: 0;
+}
+.fs-numbers span {
+  float: right;
+  width: 40%;
+  text-align: center;
+}
+.fs-numbers .fs-number-current {
+  float: left;
+}
+.fs-numbers .fs-number-new {
+  position: absolute;
+  left: 0;
+  transform: translateY(100%);
+}
+.fs-numbers.fs-show-next .fs-number-new {
+  animation: animMoveUpFromDown 0.4s both;
+}
+.fs-numbers.fs-show-next .fs-number-current {
+  animation: animMoveUp 0.4s both;
+}
+.fs-numbers.fs-show-prev .fs-number-new {
+  animation: animMoveDownFromUp 0.4s both;
+}
+.fs-numbers.fs-show-prev .fs-number-current {
+  animation: animMoveDown 0.4s both;
+}
+
+/* Animations for numbers */
+/* Show next number */
+@keyframes animMoveUpFromDown {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes animMoveUp {
+  to {
+    transform: translateY(-100%);
+  }
+}
+/* Show previous number */
+@keyframes animMoveDownFromUp {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes animMoveDown {
+  to {
+    transform: translateY(100%);
+  }
+}
+/* Continue button and submit button */
+button.fs-submit, button.fs-continue {
+  padding: 0.6em 1.5em;
+  border: 3px solid #232529;
+  border-radius: 40px;
+  font-weight: 700;
+  color: rgb(177, 65, 181);
+}
+
+.fs-form-overview .fs-submit, .no-js .fs-form .fs-submit {
+  display: block;
+  float: right;
+}
+
+.fs-form-overview .fs-submit {
+  border-color: #232529;
+  color: #A33CA7;
+}
+
+button.fs-continue {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 0 40px 60px 0;
+  font-size: 1.25em;
+  line-height: normal;
+}
+button.fs-submit:hover, button.fs-submit:focus {
+  background: #232529;
+  color: #fff;
+}
+button.fs-continue:hover {
+  background: #232529;
+  color: #fff;
+}
+
+.fs-continue::after {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  line-height: 3;
+  text-align: center;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.3);
+  content: "or press ENTER";
+  font-size: 0.65em;
+  pointer-events: none;
+}
+
+/* Error message */
+.fs-message-error {
+  position: absolute;
+  bottom: 75%;
+  left: 50%;
+  z-index: 800;
+  max-width: 960px;
+  width: 70%;
+  color: #eb7e7f;
+  font-weight: 700;
+  font-size: 1em;
+  opacity: 0;
+  transform: translate3d(-50%, -5px, 0);
+}
+.fs-message-error.fs-show {
+  opacity: 1;
+  transition: transform 0.3s, opacity 0.3s;
+  transform: translate3d(-50%, 0, 0);
+}
+
+/* Animation classes & animations */
+.fs-form li.fs-current {
+  visibility: visible;
+}
+.fs-form li.fs-hide, .fs-form li.fs-show {
+  pointer-events: none;
+}
+.fs-form .fs-display-next .fs-hide {
+  visibility: visible;
+}
+.fs-form .fs-display-next .fs-hide .fs-anim-lower, .fs-form .fs-display-next .fs-hide .fs-anim-upper {
+  animation: animHideNext 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+.fs-form .fs-display-next .fs-hide .fs-anim-lower {
+  animation-delay: 0.1s;
+}
+.fs-form .fs-display-next .fs-show .fs-anim-lower, .fs-form .fs-display-next .fs-show .fs-anim-upper {
+  animation: animShowNext 0.5s cubic-bezier(0.7, 0, 0.3, 1) both 0.15s;
+}
+.fs-form .fs-display-next .fs-show .fs-anim-lower {
+  animation-delay: 0.25s;
+}
+.fs-form .fs-display-prev .fs-hide {
+  visibility: visible;
+}
+.fs-form .fs-display-prev .fs-hide .fs-anim-lower {
+  animation: animHidePrev 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+.fs-form .fs-display-prev .fs-hide .fs-anim-upper {
+  animation: animHidePrev 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  animation-delay: 0.1s;
+}
+.fs-form .fs-display-prev .fs-show .fs-anim-lower {
+  animation: animShowPrev 0.5s cubic-bezier(0.7, 0, 0.3, 1) both 0.15s;
+}
+.fs-form .fs-display-prev .fs-show .fs-anim-upper {
+  animation: animShowPrev 0.5s cubic-bezier(0.7, 0, 0.3, 1) both 0.15s;
+  animation-delay: 0.25s;
+}
+
+/* Hide current li when navigating to next question */
+@keyframes animHideNext {
+  to {
+    opacity: 0;
+    transform: translate3d(0, -500px, 0);
+  }
+}
+/* Show new li when navigating to next question */
+@keyframes animShowNext {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 500px, 0);
+  }
+}
+/* Hide current li when navigating to previous question */
+@keyframes animHidePrev {
+  to {
+    opacity: 0;
+    transform: translate3d(0, 500px, 0);
+  }
+}
+/* Show new li when navigating to previous question */
+@keyframes animShowPrev {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -500px, 0);
+  }
+}
+/* Remove IE clear cross */
+input[type=text]::-ms-clear {
+  display: none;
+}
+
+@media screen and (max-width: 80em) {
+  .fs-fields > li label.fs-field-label {
+    font-size: 31px;
+  }
+}
+/* Adjust form for smaller screens */
+@media screen and (max-width: 52.5em) {
+  body {
+    min-height: 500px;
+  }
+  .fs-form-wrap {
+    font-size: 70%;
+  }
+  .fs-form {
+    top: 6em;
+    right: 2em;
+    left: 0;
+    padding: 0 2em 0 1em;
+    width: auto;
+    font-size: 2em;
+  }
+  .fs-fields > li label.fs-field-label {
+    font-size: 18px;
+  }
+  .fs-form.fs-form-overview {
+    top: 0;
+    right: 0;
+    padding: 1.5em 1em 8em 1em;
+    font-size: 1.5em;
+  }
+  .fs-title {
+    padding: 20px;
+  }
+  .fs-fields .padded {
+    padding: 0 25px;
+  }
+  .fs-title svg {
+    max-width: 100px;
+    height: auto;
+  }
+  .fs-fields > li .fs-radio-custom span {
+    float: none;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-size: 90%;
+    margin: 0 0 20px 0;
+    display: block;
+  }
+  .fs-fields > li .fs-radio-custom.bigbuttons {
+    display: block;
+  }
+  .fs-fields > li .fs-radio-custom.bigbuttons span label {
+    font-size: 1em;
+  }
+  .fs-form-overview .fs-fields > li, .no-js .fs-form .fs-fields > li {
+    padding: 0 0 1em 0;
+  }
+  .fs-numbers {
+    margin: 20px;
+  }
+  .fs-nav-dots {
+    right: 15px;
+    display: none;
+  }
+  .fs-nav-dots button {
+    width: 13px;
+    height: 13px;
+  }
+  button.fs-continue {
+    right: 20px;
+    bottom: 20px;
+    margin: 0;
+    padding: 50px 0 0 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 2em;
+    font-family: "FontAwesome";
+    overflow: hidden;
+  }
+  button.fs-continue::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background-size: 42%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("data:image/svg+xml,%3Csvg width='139pt' height='146pt' viewBox='0 0 139 146' version='1.1' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='%23222222ff'%3E%3Cpath fill='%23222222' opacity='1.00' d=' M 61.54 0.00 L 70.46 0.00 C 74.41 3.20 77.82 7.00 81.45 10.55 C 99.47 28.54 117.44 46.58 135.49 64.55 C 138.40 67.48 138.90 72.01 138.08 75.90 C 137.04 79.75 133.98 82.53 131.31 85.30 C 115.39 101.05 99.66 116.99 83.76 132.75 C 79.15 137.32 74.82 142.24 69.50 146.00 L 61.47 146.00 C 57.06 142.29 52.90 138.23 49.11 133.89 C 45.39 129.54 45.98 122.78 49.59 118.57 C 58.41 109.24 68.07 100.69 76.56 91.06 C 54.69 90.66 32.81 91.06 10.94 90.87 C 4.72 91.04 0.82 84.62 0.78 79.00 C 0.74 72.22 -0.50 64.59 3.62 58.68 C 5.79 55.19 10.29 54.64 14.03 54.47 C 35.03 54.30 56.05 54.74 77.06 54.27 C 70.14 47.08 62.92 40.19 55.94 33.06 C 52.48 29.48 48.08 26.22 46.81 21.15 C 45.74 17.19 47.35 12.98 50.06 10.06 C 53.49 6.29 57.22 2.73 61.54 0.00 Z' /%3E%3C/g%3E%3C/svg%3E");
+    text-align: center;
+    font-size: 1em;
+    line-height: 50px;
+  }
+  button.fs-continue:hover:before {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(136deg) brightness(105%) contrast(101%);
+  }
+  .fs-continue::after {
+    content: "";
+  }
+  button.fs-submit {
+    width: 100%;
+    font-size: 1.25em;
+  }
+  .fs-message-error {
+    bottom: 1.75em;
+    left: 0;
+    padding: 0 90px 0 2em;
+    width: 100%;
+    font-size: 1.5em;
+    transform: translate3d(0, -5px, 0);
+  }
+  .fs-message-error.fs-show {
+    transform: translate3d(0, 0, 0);
+  }
+  /* controls */
+  .fs-nav-dots {
+    right: auto;
+    left: 20px;
+    bottom: 33px;
+    top: auto;
+    display: flex;
+  }
+  .fs-nav-dots button {
+    margin: 0 9px;
+    width: 5px;
+    height: 5px;
+  }
+}

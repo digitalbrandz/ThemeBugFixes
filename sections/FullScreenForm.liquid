@@ -1,0 +1,1355 @@
+{{ 'fullscreenform-components.css' | asset_url | stylesheet_tag }}
+{{ 'fullscreenform-blocks.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'fullscreenform.js' | asset_url }}" defer></script>
+
+{%- style -%}
+{%- if section.settings.fullscreen == true -%} 
+  .header-wrapper, footer.footer {
+    display:none;
+  }
+  .fs-container {
+  position:absolute;
+  }
+{%- endif -%} 
+  button.fs-submit, button.fs-continue, .fs-fields input, .fs-form-overview .fs-submit  {
+    color:{{ section.settings.accent_color }};
+    }
+  .fs-nav-dots button:hover:before, .fs-nav-dots button.fs-dot-current:before, .fs-progress, .fs-fields .fs-radio-custom input[type=radio]:checked + label {
+      background: {{ section.settings.accent_color }};
+  }
+
+  @media screen and (max-width: 52.5em) {
+  button.fs-continue::before {
+      background-image: url("data:image/svg+xml,%3Csvg width='139pt' height='146pt' viewBox='0 0 139 146' version='1.1' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='%23222222ff'%3E%3Cpath fill='{{ section.settings.accent_color | url_encode }}' opacity='1.00' d=' M 61.54 0.00 L 70.46 0.00 C 74.41 3.20 77.82 7.00 81.45 10.55 C 99.47 28.54 117.44 46.58 135.49 64.55 C 138.40 67.48 138.90 72.01 138.08 75.90 C 137.04 79.75 133.98 82.53 131.31 85.30 C 115.39 101.05 99.66 116.99 83.76 132.75 C 79.15 137.32 74.82 142.24 69.50 146.00 L 61.47 146.00 C 57.06 142.29 52.90 138.23 49.11 133.89 C 45.39 129.54 45.98 122.78 49.59 118.57 C 58.41 109.24 68.07 100.69 76.56 91.06 C 54.69 90.66 32.81 91.06 10.94 90.87 C 4.72 91.04 0.82 84.62 0.78 79.00 C 0.74 72.22 -0.50 64.59 3.62 58.68 C 5.79 55.19 10.29 54.64 14.03 54.47 C 35.03 54.30 56.05 54.74 77.06 54.27 C 70.14 47.08 62.92 40.19 55.94 33.06 C 52.48 29.48 48.08 26.22 46.81 21.15 C 45.74 17.19 47.35 12.98 50.06 10.06 C 53.49 6.29 57.22 2.73 61.54 0.00 Z' /%3E%3C/g%3E%3C/svg%3E");
+  }
+  button.fs-continue:hover::before {
+      background-image: url("data:image/svg+xml,%3Csvg width='139pt' height='146pt' viewBox='0 0 139 146' version='1.1' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='%23222222ff'%3E%3Cpath fill='%23ffffff' opacity='1.00' d=' M 61.54 0.00 L 70.46 0.00 C 74.41 3.20 77.82 7.00 81.45 10.55 C 99.47 28.54 117.44 46.58 135.49 64.55 C 138.40 67.48 138.90 72.01 138.08 75.90 C 137.04 79.75 133.98 82.53 131.31 85.30 C 115.39 101.05 99.66 116.99 83.76 132.75 C 79.15 137.32 74.82 142.24 69.50 146.00 L 61.47 146.00 C 57.06 142.29 52.90 138.23 49.11 133.89 C 45.39 129.54 45.98 122.78 49.59 118.57 C 58.41 109.24 68.07 100.69 76.56 91.06 C 54.69 90.66 32.81 91.06 10.94 90.87 C 4.72 91.04 0.82 84.62 0.78 79.00 C 0.74 72.22 -0.50 64.59 3.62 58.68 C 5.79 55.19 10.29 54.64 14.03 54.47 C 35.03 54.30 56.05 54.74 77.06 54.27 C 70.14 47.08 62.92 40.19 55.94 33.06 C 52.48 29.48 48.08 26.22 46.81 21.15 C 45.74 17.19 47.35 12.98 50.06 10.06 C 53.49 6.29 57.22 2.73 61.54 0.00 Z' /%3E%3C/g%3E%3C/svg%3E");
+  }
+  }
+{%- endstyle -%}
+
+
+
+<div class="fs-container"> 
+    <div class="fs-form-wrap" id="fs-form-wrap">
+        <div class="fs-title">
+            <a href="{{ routes.root_url }}">
+                {%- if section.settings.svg != blank -%}    
+                <span>   {{ section.settings.svg }} </span>
+                {%- else -%}
+                   {%- if section.settings.image != blank -%} 
+                    <span> <img src="{{ section.settings.image | img_url: 'large' }}" /></span>
+                   {%- else -%}
+                    
+                   {%- endif -%}    
+                {%- endif -%}      
+           </a> 
+        </div> 
+
+        <form id="myform" class="fs-form fs-form-full" autocomplete="off" data-klaviyo="{{ section.settings.klaviyo }}">
+            <ol class="fs-fields"> 
+            {% assign i = 1 %}
+            {% assign tabindex = 1 %}                      
+            {% for block in section.blocks %}
+                {% case block.type %}
+                    {% when 'Youtube' %}
+                        <li
+                          class="{% if block.settings.conditional and block.settings.conditional_block_id != '' and block.settings.conditional_block_value != '' %}conditional{% endif %} video"
+                          data-link-trigger
+                          {{ block.shopify_attributes }}
+                        >
+                          <label
+                            priority="{{ block.settings.priority  }}"
+                            class="fs-field-label fs-anim-upper"
+                            for="af-{{ section.id }}-q{{ i }}"
+                          >
+                            {{- block.settings.title -}}
+                          </label>
+          
+                          <div class="fs-radio-group fs-radio-custom bigbuttons clearfix fs-anim-lower">
+                            <div class="video-wrap">
+                              <iframe
+                                width="560"
+                                height="315"
+                                src="https://www.youtube.com/embed/{{ block.settings.youtube_url.id }}?playsinline=1&version=3&enablejsapi=1"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                              ></iframe>
+                            </div>
+                            <div>
+                              <a href="#">{{ block.settings.button_text }}</a>
+                            </div>
+                          </div>
+                        </li>
+                      {% when 'TextArea' %}
+                        <li
+                          id="block-{{ block.id }}" data-field-id="{{ block.settings.fieldname }}"
+                          class="{% if block.settings.conditional and block.settings.conditional_block_id != '' and block.settings.conditional_block_value != '' %}skip{% endif %}"
+                          {{ block.shopify_attributes }}
+                        >
+                          <label
+                            priority="{{ block.settings.priority  }}"
+                            class="fs-field-label fs-anim-upper"
+                            for="af-{{ section.id }}-q{{ i }}"
+                          >
+                            {{- block.settings.title -}}
+                            {%- if block.settings.required and block.settings.conditional == false -%}
+                              <span class="required">*</span>
+                            {%- endif -%}
+                          </label>
+                          <textarea
+                            class="fs-anim-lower"
+                            tabindex="{{ tabindex }}"
+                            id="af-{{ section.id }}-q{{ i }}"
+                            name="af-{{ section.id }}-q{{ i }}"
+                            type="textarea"
+                            rows="10"
+                            cols="50"
+                            {% if block.settings.required and block.settings.conditional == false %}
+                              required
+                            {% endif -%}
+                          ></textarea>
+                        </li>
+                        {% assign tabindex = tabindex | plus: 1 %}
+                    {% when 'BigButtons' %}
+                        <li id="block-{{ block.id }}" data-field-id="{{ block.settings.fieldname }}" class="{% if block.settings.conditional and block.settings.conditional_block_id != '' and block.settings.conditional_block_value != '' %}skip{% endif %}" data-input-trigger {{ block.shopify_attributes }}>
+                          <label priority="{{ block.settings.priority  }}" class="fs-field-label fs-anim-upper" for="af-{{ section.id }}-q{{ i }}">{{ block.settings.title }}</label>
+                            <div class="fs-radio-group fs-radio-custom bigbuttons clearfix fs-anim-lower {% if section.settings.onerow != false %}onerow{% endif %}">
+                              {% if block.settings.a != '' %}
+                              {% assign length =  block.settings.a | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}a" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.a }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}a">{{ block.settings.a }}</label></span>
+                             {% endif %}
+                             {% if block.settings.b != '' %}
+                              {% assign length =  block.settings.b | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}b" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.b }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}b">{{ block.settings.b }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                  {% if block.settings.c != '' %}
+                               {% assign length =  block.settings.c | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}c" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.c }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}c">{{ block.settings.c }}</label></span>
+                            {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.d != '' %}
+                               {% assign length =  block.settings.d | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}d" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.d }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}d">{{ block.settings.d }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.e != '' %}
+                               {% assign length =  block.settings.e | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}e" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.e }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}e">{{ block.settings.e }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.f != '' %}
+                               {% assign length =  block.settings.f | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}f" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.f }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}f">{{ block.settings.f }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.g != '' %}
+                               {% assign length =  block.settings.g | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}g" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.g }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}g">{{ block.settings.g }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.h != '' %}
+                               {% assign length =  block.settings.h | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}h" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.h }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}h">{{ block.settings.h }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.i != '' %}
+                               {% assign length =  block.settings.i | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}i" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.i }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}i">{{ block.settings.i }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                          </div>  
+                        </li>
+                        {% when 'SmallButtons' %}
+                        <li id="block-{{ block.id }}" data-field-id="{{ block.settings.fieldname }}" class="{% if block.settings.conditional and block.settings.conditional_block_id != '' and block.settings.conditional_block_value != '' %}skip{% endif %}" data-input-trigger {{ block.shopify_attributes }}>   
+                          <label priority="{{ block.settings.priority  }}" class="fs-field-label fs-anim-upper" for="af-{{ section.id }}-q{{ i }}">{{ block.settings.title }}</label>
+                            <div class="fs-radio-group fs-radio-custom smallbuttons clearfix fs-anim-lower {% if section.settings.onerow != false %}onerow{% endif %}">
+                              {% if block.settings.a != '' %}
+                              {% assign length =  block.settings.a | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}a" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.a }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}a">{{ block.settings.a }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %}
+                             {% if block.settings.b != '' %}
+                              {% assign length =  block.settings.b | size %}
+                              <span><input  tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}b" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.b }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}b">{{ block.settings.b }}</label></span>
+                            {% assign tabindex = tabindex | plus: 1 %}
+                              {% endif %} 
+                                  {% if block.settings.c != '' %}
+                               {% assign length =  block.settings.c | size %}
+                              <span><input  tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}c" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.c }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}c">{{ block.settings.c }}</label></span>
+                            {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.d != '' %}
+                               {% assign length =  block.settings.d | size %}
+                              <span><input  tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}d" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.d }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}d">{{ block.settings.d }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.e != '' %}
+                               {% assign length =  block.settings.e | size %}
+                              <span><input  tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}e" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.e }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}e">{{ block.settings.e }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.f != '' %}
+                               {% assign length =  block.settings.f | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}f" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.f }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}f">{{ block.settings.f }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.g != '' %}
+                               {% assign length =  block.settings.g | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}g" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.g }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}}g">{{ block.settings.g }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.h != '' %}
+                               {% assign length =  block.settings.h | size %}
+                              <span><input  tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}h" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.h }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}h">{{ block.settings.h }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %} 
+                              {% endif %} 
+                                   {% if block.settings.i != '' %}
+                               {% assign length =  block.settings.i | size %}
+                              <span><input tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}i" name="af-{{ section.id }}-q{{ i }}" type="radio" value="{{ block.settings.i }}"/><label class="{% if length == 3 %}small {% elsif length > 3 %}smaller{% endif %}" for="af-{{ section.id }}-q{{ i }}i">{{ block.settings.i }}</label></span>
+                             {% assign tabindex = tabindex | plus: 1 %}
+                              {% endif %} 
+                          </div>  
+                        </li>
+                    {% when 'DropDown' %}
+                        <li id="block-{{ block.id }}" data-field-id="{{ block.settings.fieldname }}" class="{% if block.settings.conditional and block.settings.conditional_block_id != '' and block.settings.conditional_block_value != '' %}skip{% endif %}" data-input-trigger {{ block.shopify_attributes }}>
+                          <label priority="{{ block.settings.priority  }}" class="fs-field-label fs-anim-upper" for="af-{{ section.id }}-q{{ i }}">{{ block.settings.title }}{% if block.settings.required and block.settings.conditional == false %}<span class="required">*</span>{% endif %}</label>
+                           <div class="fs-anim-lower">
+                             <select {% if block.settings.conditional != '' %}conditional="{{ block.settings.conditional | minus: 1 }}"{% endif %} tabindex="{{ tabindex }}" name="af-{{ section.id }}-q{{ i }}" id="af-{{ section.id }}-q{{ i }}" {% if block.settings.required and block.settings.conditional == false %}required{% endif %}>
+                              {% if block.settings.a != '' %}
+                               <option value="{{ block.settings.a }}" selected>{{ block.settings.a }}</option>
+                             {% endif %}
+                                     {% if block.settings.b != '' %}
+                               <option value="{{ block.settings.b }}">{{ block.settings.b }}</option>
+                             {% endif %}
+                                     {% if block.settings.c != '' %}
+                               <option value="{{ block.settings.c }}">{{ block.settings.c }}</option>
+                             {% endif %}
+                                     {% if block.settings.d != '' %}
+                               <option value="{{ block.settings.d }}">{{ block.settings.d }}</option>
+                             {% endif %}
+                                     {% if block.settings.e != '' %}
+                               <option value="{{ block.settings.e }}">{{ block.settings.e }}</option>
+                             {% endif %}
+                                     {% if block.settings.f != '' %}
+                               <option value="{{ block.settings.f }}">{{ block.settings.f }}</option>
+                             {% endif %}     
+                               {% if block.settings.g != '' %}
+                               <option value="{{ block.settings.g }}">{{ block.settings.g }}</option>
+                             {% endif %}      
+                               {% if block.settings.h != '' %}
+                               <option value="{{ block.settings.h }}">{{ block.settings.h }}</option>
+                             {% endif %}      
+                               {% if block.settings.i != '' %}
+                               <option value="{{ block.settings.i }}">{{ block.settings.i }}</option>
+                             {% endif %}      
+                             {% if block.settings.j != '' %}
+                               <option value="{{ block.settings.j }}">{{ block.settings.j }}</option>
+                             {% endif %}     
+                                   {% if block.settings.k != '' %}
+                               <option value="{{ block.settings.k }}">{{ block.settings.k }}</option>
+                             {% endif %}   
+                                   {% if block.settings.l != '' %}
+                               <option value="{{ block.settings.l }}">{{ block.settings.l }}</option>
+                             {% endif %}   
+                                      {% if block.settings.m != '' %}
+                               <option value="{{ block.settings.m }}">{{ block.settings.m }}</option>
+                             {% endif %}   
+                                             {% if block.settings.n != '' %}
+                               <option value="{{ block.settings.n }}">{{ block.settings.n }}</option>
+                             {% endif %}   
+                                             {% if block.settings.n != '' %}
+                               <option value="{{ block.settings.n }}">{{ block.settings.n }}</option>
+                             {% endif %}   
+                               {% if block.settings.o != '' %}
+                               <option value="{{ block.settings.o }}">{{ block.settings.o }}</option>
+                             {% endif %}   
+                             </select>
+                          </div>
+                        </li>                      
+                        {% assign tabindex = tabindex | plus: 1 %}  
+
+                    {% else %}
+                    <li id="block-{{ block.id }}" data-field-id="{{ block.settings.fieldname }}" class="{% if block.settings.conditional and block.settings.conditional_block_id != '' and block.settings.conditional_block_value != '' %}skip{% endif %} {% case block.type %}{% when 'Phone' %}phone{% when 'Email' %}email{% when 'Url' %}websiteurl{% endcase %}"  {{ block.shopify_attributes }}>
+                      <label priority="{{ block.settings.priority  }}" class="fs-field-label fs-anim-upper" for="af-{{ section.id }}-q{{ i }}">{{ block.settings.title }}{% if block.settings.required and block.settings.conditional == false %}<span class="required">*</span>{% endif %}</label>
+                        <input class="fs-anim-lower" tabindex="{{ tabindex }}" id="af-{{ section.id }}-q{{ i }}" name="af-{{ section.id }}-q{{ i }}" {% case block.type %}{% when 'Phone' %}type="tel"{% when 'Email' %}type="email"{% else %}type="text"{% endcase %} {% if block.settings.required and block.settings.conditional == false %}required{% endif %}/>
+                    </li>  
+                {% assign tabindex = tabindex | plus: 1 %}                                                                              
+            {% endcase %}
+            {% assign i = i | plus: 1 %}   
+        {% endfor %}
+
+        </ol>
+        <button class="fs-submit" type="submit">Give me Access</button> 
+    </form>
+
+    <div class="fs-form fs-form-overview advancedform-confirmation">
+        {% for block in section.blocks %}
+          {% case block.type %}
+           {% when 'Confirmation' %}
+        <div id="block-{{ block.id }}" class="confirmation-block{% if block.settings.conditional and block.settings.conditional_block_id != '' and block.settings.conditional_block_value != '' %} skip {% else %}{% unless hasDefault %} default {% assign hasDefault = true %}{% endunless %}{% endif %}" {{ block.shopify_attributes }}>
+         {% if block.settings.customHTML %}
+         {{ block.settings.html }}
+         {% else %}
+          <h2>{{ block.settings.confirmation }}</h2>
+          <div class="goback">
+          <a href="/">Back to Homepage</a>
+         </div>
+        {% endif %}
+        </div>
+        {% endcase %}
+        {% endfor %}
+      </div> 
+
+            </div><!-- /fs-form-wrap -->
+        </div><!-- /container -->
+
+{% schema %}
+  {
+    "name": "FullScreen Form",
+    "class": "fullscreenform-section",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+              "type": "textarea",
+              "id": "svg",
+              "label": "SVG"
+          },
+{
+        "id": "title",
+        "type": "text",
+        "label": "Title",
+        "default": "Booking"
+},
+{
+    "id": "fullscreen",
+    "type": "checkbox",
+    "label": "Fullscreen",
+    "default": true
+},
+{
+    "id": "accent_color",
+    "type": "color",
+    "label": "Accent Color",
+    "default": "#000000"
+},
+{
+   "type":      "header",
+   "content":   "Send Options"
+},
+{
+    "id": "klaviyo",
+    "type": "url",
+    "label": "klaviyo endpoint URL"
+}
+],
+"blocks": [
+{
+     "type": "Confirmation",
+     "name": "Confirmation Message",
+     "settings" : [
+{
+        "id": "confirmation",
+        "type": "textarea",
+        "label": "Confirmation Message"
+},
+     {
+  "type": "checkbox",
+  "id": "customHTML",
+  "label": "Enable and use Custom HTML instead"
+     },
+     {
+      "id": "html",
+      "type": "html",
+      "label": "Custom HTML (override)"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+    {
+     "type": "Name",
+     "name": "Name",
+     "limit": 1,
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question",
+        "default": "What's your name?"
+      },
+     {
+        "type": "text",
+        "id": "fieldname",
+        "label": "Field name",
+        "default": "name"
+      },
+     {
+  "type": "checkbox",
+  "id": "required",
+  "label": "Required"
+     },
+     {
+        "type": "header",
+        "content": "Lead Priority"
+      },
+     {
+   "type": "radio",
+   "id": "priority",
+   "options": [
+      { "value": "header-high", "label": "Header - High"},
+      { "value": "header-mid", "label": "Header - Medium"},
+      { "value": "header-low", "label": "Header - Low"},
+      { "value": "body-high", "label": "Body - High"},
+      { "value": "body-mid", "label": "Body - Medium"},
+      { "value": "body-low", "label": "Body - Low"},
+      { "value": "footer-high", "label": "Footer - High"},
+      { "value": "footer-mid", "label": "Footer - Medium"},
+      { "value": "footer-low", "label": "Footer - Low"}
+   ],
+   "default" : "header-high",
+   "label": "Order Priority"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+    {
+     "type": "Email",
+     "name": "Email",
+     "limit": 1,
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question",
+        "default": "What's your email?"
+      },
+     {
+        "type": "text",
+        "id": "fieldname",
+        "label": "Title (Optional)",
+        "default": "email"
+      },
+     {
+  "type": "checkbox",
+  "id": "required",
+  "label": "Required",
+  "default":   true
+     },
+     {
+        "type": "header",
+        "content": "Lead Priority"
+      },
+     {
+   "type": "radio",
+   "id": "priority",
+   "options": [
+      { "value": "header-high", "label": "Header - High"},
+      { "value": "header-mid", "label": "Header - Medium"},
+      { "value": "header-low", "label": "Header - Low"},
+      { "value": "body-high", "label": "Body - High"},
+      { "value": "body-mid", "label": "Body - Medium"},
+      { "value": "body-low", "label": "Body - Low"},
+      { "value": "footer-high", "label": "Footer - High"},
+      { "value": "footer-mid", "label": "Footer - Medium"},
+      { "value": "footer-low", "label": "Footer - Low"}
+   ],
+   "default" : "footer-high",
+   "label": "Order Priority"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+{
+     "type": "Phone",
+     "name": "Phone",
+     "limit": 1,
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question",
+        "default": "What's your Phone Number?"
+      },
+     {
+        "type": "text",
+        "id": "fieldname",
+        "label": "Field name",
+        "default": "phone"
+      },
+     {
+  "type": "checkbox",
+  "id": "required",
+  "label": "Required",
+  "default":   true
+     },
+     {
+        "type": "header",
+        "content": "Lead Priority"
+      },
+     {
+   "type": "radio",
+   "id": "priority",
+   "options": [
+      { "value": "header-high", "label": "Header - High"},
+      { "value": "header-mid", "label": "Header - Medium"},
+      { "value": "header-low", "label": "Header - Low"},
+      { "value": "body-high", "label": "Body - High"},
+      { "value": "body-mid", "label": "Body - Medium"},
+      { "value": "body-low", "label": "Body - Low"},
+      { "value": "footer-high", "label": "Footer - High"},
+      { "value": "footer-mid", "label": "Footer - Medium"},
+      { "value": "footer-low", "label": "Footer - Low"}
+   ],
+   "default" : "footer-mid",
+   "label": "Order Priority"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+{
+     "type": "Url",
+     "name": "Url",
+     "limit": 1,
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question"
+      },
+     {
+        "type": "text",
+        "id": "fieldname",
+        "label": "Title (Optional)",
+        "default": "Website URL"
+      },
+     {
+  "type": "checkbox",
+  "id": "required",
+  "label": "Required"
+     },
+     {
+        "type": "header",
+        "content": "Lead Priority"
+      },
+     {
+   "type": "radio",
+   "id": "priority",
+   "options": [
+      { "value": "header-high", "label": "Header - High"},
+      { "value": "header-mid", "label": "Header - Medium"},
+      { "value": "header-low", "label": "Header - Low"},
+      { "value": "body-high", "label": "Body - High"},
+      { "value": "body-mid", "label": "Body - Medium"},
+      { "value": "body-low", "label": "Body - Low"},
+      { "value": "footer-high", "label": "Footer - High"},
+      { "value": "footer-mid", "label": "Footer - Medium"},
+      { "value": "footer-low", "label": "Footer - Low"}
+   ],
+   "default" : "body-mid",
+   "label": "Order Priority"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+{
+     "type": "Description",
+     "name": "Description",
+     "limit": 1,
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question"
+      },
+     {
+        "type": "text",
+        "id": "fieldname",
+        "label": "Field name"
+      },
+     {
+  "type": "checkbox",
+  "id": "required",
+  "label": "Required"
+     },
+     {
+        "type": "header",
+        "content": "Lead Priority"
+      },
+     {
+   "type": "radio",
+   "id": "priority",
+   "options": [
+      { "value": "header-high", "label": "Header - High"},
+      { "value": "header-mid", "label": "Header - Medium"},
+      { "value": "header-low", "label": "Header - Low"},
+      { "value": "body-high", "label": "Body - High"},
+      { "value": "body-mid", "label": "Body - Medium"},
+      { "value": "body-low", "label": "Body - Low"},
+      { "value": "footer-high", "label": "Footer - High"},
+      { "value": "footer-mid", "label": "Footer - Medium"},
+      { "value": "footer-low", "label": "Footer - Low"}
+   ],
+   "default" : "body-mid",
+   "label": "Order Priority"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+ {
+     "type": "TextInput",
+     "name": "Text Input",
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question"
+      },
+     {
+        "type": "text",
+        "id": "fieldname",
+        "label": "Field name"
+      },
+     {
+  "type": "checkbox",
+  "id": "required",
+  "label": "Required"
+     },
+     {
+        "type": "header",
+        "content": "Lead Priority"
+      },
+     {
+   "type": "radio",
+   "id": "priority",
+   "options": [
+      { "value": "header-high", "label": "Header - High"},
+      { "value": "header-mid", "label": "Header - Medium"},
+      { "value": "header-low", "label": "Header - Low"},
+      { "value": "body-high", "label": "Body - High"},
+      { "value": "body-mid", "label": "Body - Medium"},
+      { "value": "body-low", "label": "Body - Low"},
+      { "value": "footer-high", "label": "Footer - High"},
+      { "value": "footer-mid", "label": "Footer - Medium"},
+      { "value": "footer-low", "label": "Footer - Low"}
+   ],
+   "default" : "body-mid",
+   "label": "Order Priority"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+{
+     "type": "TextArea",
+     "name": "Text Area",
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question"
+      },
+     {
+        "type": "text",
+        "id": "fieldname",
+        "label": "Field name"
+      },
+     {
+  "type": "checkbox",
+  "id": "required",
+  "label": "Required"
+     },
+     {
+        "type": "header",
+        "content": "Lead Priority"
+      },
+     {
+   "type": "radio",
+   "id": "priority",
+   "options": [
+      { "value": "header-high", "label": "Header - High"},
+      { "value": "header-mid", "label": "Header - Medium"},
+      { "value": "header-low", "label": "Header - Low"},
+      { "value": "body-high", "label": "Body - High"},
+      { "value": "body-mid", "label": "Body - Medium"},
+      { "value": "body-low", "label": "Body - Low"},
+      { "value": "footer-high", "label": "Footer - High"},
+      { "value": "footer-mid", "label": "Footer - Medium"},
+      { "value": "footer-low", "label": "Footer - Low"}
+   ],
+   "default" : "body-mid",
+   "label": "Order Priority"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+{
+     "type": "DropDown",
+     "name": "Drop Down Select",
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question"
+      },
+     {
+        "type": "text",
+        "id": "fieldname",
+        "label": "Field name"
+      },
+     {
+  "type": "checkbox",
+  "id": "required",
+  "label": "Required"
+     },
+      {
+        "type": "header",
+        "content": "Optional Answers"
+      },
+     {
+        "type": "text",
+        "id": "a",
+        "label": "Answer 1"
+      },
+     {
+        "type": "text",
+        "id": "b",
+        "label": "Answer 2"
+      },
+     {
+        "type": "text",
+        "id": "c",
+        "label": "Answer 3"
+      },
+     {
+        "type": "text",
+        "id": "d",
+        "label": "Answer 4"
+      },
+     {
+        "type": "text",
+        "id": "e",
+        "label": "Answer 5"
+      },
+     {
+        "type": "text",
+        "id": "f",
+        "label": "Answer 6"
+      },     {
+        "type": "text",
+        "id": "g",
+        "label": "Answer 7"
+      },
+     {
+        "type": "text",
+        "id": "h",
+        "label": "Answer 8"
+      },
+     {
+        "type": "text",
+        "id": "i",
+        "label": "Answer 9"
+      },
+     {
+        "type": "text",
+        "id": "j",
+        "label": "Answer 10"
+      },
+     {
+        "type": "text",
+        "id": "k",
+        "label": "Answer 11"
+      },
+     {
+        "type": "text",
+        "id": "l",
+        "label": "Answer 12"
+      },
+     {
+        "type": "text",
+        "id": "m",
+        "label": "Answer 13"
+      },
+     {
+        "type": "text",
+        "id": "n",
+        "label": "Answer 14"
+      },
+     {
+        "type": "text",
+        "id": "o",
+        "label": "Answer 15"
+      },
+     {
+        "type": "header",
+        "content": "Lead Priority"
+      },
+     {
+   "type": "radio",
+   "id": "priority",
+   "options": [
+      { "value": "header-high", "label": "Header - High"},
+      { "value": "header-mid", "label": "Header - Medium"},
+      { "value": "header-low", "label": "Header - Low"},
+      { "value": "body-high", "label": "Body - High"},
+      { "value": "body-mid", "label": "Body - Medium"},
+      { "value": "body-low", "label": "Body - Low"},
+      { "value": "footer-high", "label": "Footer - High"},
+      { "value": "footer-mid", "label": "Footer - Medium"},
+      { "value": "footer-low", "label": "Footer - Low"}
+   ],
+   "default" : "body-mid",
+   "label": "Order Priority"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+{
+     "type": "BigButtons",
+     "name": "Big Buttons",
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question"
+      },
+     {
+        "type": "text",
+        "id": "fieldname",
+        "label": "Field name"
+      },
+     {
+  "type": "checkbox",
+  "id": "required",
+  "label": "Required"
+     },
+      {
+        "type": "header",
+        "content": "Optional Answers"
+      },
+     {
+        "type": "text",
+        "id": "a",
+        "label": "Answer 1"
+      },
+     {
+        "type": "text",
+        "id": "b",
+        "label": "Answer 2"
+      },
+     {
+        "type": "text",
+        "id": "c",
+        "label": "Answer 3"
+      },
+     {
+        "type": "text",
+        "id": "d",
+        "label": "Answer 4"
+      },
+     {
+        "type": "text",
+        "id": "e",
+        "label": "Answer 5"
+      },
+     {
+        "type": "text",
+        "id": "f",
+        "label": "Answer 6"
+      },     {
+        "type": "text",
+        "id": "g",
+        "label": "Answer 7"
+      },
+     {
+        "type": "text",
+        "id": "h",
+        "label": "Answer 8"
+      },
+     {
+        "type": "text",
+        "id": "i",
+        "label": "Answer 9"
+      },
+     {
+        "type": "header",
+        "content": "Lead Priority"
+      },
+     {
+   "type": "radio",
+   "id": "priority",
+   "options": [
+      { "value": "header-high", "label": "Header - High"},
+      { "value": "header-mid", "label": "Header - Medium"},
+      { "value": "header-low", "label": "Header - Low"},
+      { "value": "body-high", "label": "Body - High"},
+      { "value": "body-mid", "label": "Body - Medium"},
+      { "value": "body-low", "label": "Body - Low"},
+      { "value": "footer-high", "label": "Footer - High"},
+      { "value": "footer-mid", "label": "Footer - Medium"},
+      { "value": "footer-low", "label": "Footer - Low"}
+   ],
+   "default" : "body-mid",
+   "label": "Order Priority"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+{
+     "type": "SmallButtons",
+     "name": "Small Buttons",
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question"
+      },
+     {
+        "type": "text",
+        "id": "fieldname",
+        "label": "Field name"
+      },
+     {
+  "type": "checkbox",
+  "id": "required",
+  "label": "Required"
+     },
+      {
+        "type": "header",
+        "content": "Optional Answers"
+      },
+     {
+        "type": "text",
+        "id": "a",
+        "label": "Answer 1"
+      },
+     {
+        "type": "text",
+        "id": "b",
+        "label": "Answer 2"
+      },
+     {
+        "type": "text",
+        "id": "c",
+        "label": "Answer 3"
+      },
+     {
+        "type": "text",
+        "id": "d",
+        "label": "Answer 4"
+      },
+     {
+        "type": "text",
+        "id": "e",
+        "label": "Answer 5"
+      },
+     {
+        "type": "text",
+        "id": "f",
+        "label": "Answer 6"
+      },     {
+        "type": "text",
+        "id": "g",
+        "label": "Answer 7"
+      },
+     {
+        "type": "text",
+        "id": "h",
+        "label": "Answer 8"
+      },
+     {
+        "type": "text",
+        "id": "i",
+        "label": "Answer 9"
+      },
+     {
+        "type": "header",
+        "content": "Lead Priority"
+      },
+     {
+   "type": "radio",
+   "id": "priority",
+   "options": [
+      { "value": "header-high", "label": "Header - High"},
+      { "value": "header-mid", "label": "Header - Medium"},
+      { "value": "header-low", "label": "Header - Low"},
+      { "value": "body-high", "label": "Body - High"},
+      { "value": "body-mid", "label": "Body - Medium"},
+      { "value": "body-low", "label": "Body - Low"},
+      { "value": "footer-high", "label": "Footer - High"},
+      { "value": "footer-mid", "label": "Footer - Medium"},
+      { "value": "footer-low", "label": "Footer - Low"}
+   ],
+   "default" : "body-mid",
+   "label": "Order Priority"
+     },
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+},
+{
+     "type": "Youtube",
+     "name": "Youtube",
+     "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+     {
+        "type": "text",
+        "id": "button_text",
+        "label": "Continue Button Text"
+      },
+{
+   "id": "youtube_url",
+   "type": "video_url",
+   "label": "Youtube URL",
+   "accept": ["youtube"],
+   "default": "https://www.youtube.com/watch?v=6L_k74BOLag"
+},
+     {
+        "type": "header",
+        "content": "Conditional Logic"
+      },
+     {
+        "type": "checkbox",
+        "id": "conditional",
+        "label": "Enable Conditional Logic"
+      },
+     {
+        "type": "text",
+        "id": "conditional_block_id",
+        "label": "Conditional Block ID"
+      },
+{
+   "type": "select",
+   "id": "conditional_if",
+   "options": [
+      { "value": "is", "label": "is"},
+      { "value": "is not", "label": "is not"},
+      { "value": "contains", "label": "contains"}
+   ],
+   "label": "If Answer"
+},
+     {
+        "type": "text",
+        "id": "conditional_block_value",
+        "label": "This Value"
+      }
+]
+}
+ ]
+  }
+{% endschema %}

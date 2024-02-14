@@ -1,0 +1,382 @@
+{% if section.settings.activate_slider != false %}  
+{{ '//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css' | stylesheet_tag }}
+<script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<div id="slick-{{ section.id }}">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'Slider' %}
+         <div><a href="{{ block.settings.slide_url }}"><img src="{{ block.settings.slide_image | img_url: '2048x2048' }}" /></a></div>
+       {% endcase %}
+   {% endfor %}
+</div>
+<script>
+$('#slick-{{ section.id }}').slick({infinite:true,speed:800,slidesToShow:1,adaptiveHeight:true,autoplay:true,autoplaySpeed:5000,arrows: false});
+</script>
+{% else %}
+{% unless section.settings.rev == '' %}
+
+{% assign urls = section.settings.rev | split: '"//' %} 
+
+{% for url in urls %}
+{% assign link = url %} 
+{% assign link = url | split: '"' %} 
+{% assign link = link[0] %} 
+
+
+
+{% comment %} check for transparent png and declare admin_assets_images_link {% endcomment %}
+{% if link contains '/plugins/revslider/admin/assets/images/' %}
+{% assign link_parts = link | split: '/' %}
+{% capture admin_assets_images_link %}{% for link_part in link_parts %}{% unless forloop.first == true %}/{% endunless %}{% unless forloop.last == true %}{{ link_part }}{% endunless %}{% endfor %}{% endcapture %}
+{% unless admin_assets_images_link contains '//' %}
+{% assign admin_assets_images_link = admin_assets_images_link | prepend: '//' %}
+{% endunless %}
+{% endif %} 
+
+
+{% comment %}  check for svg and declare admin_assets_svg_link {% endcomment %}
+{% if link contains '/svg/' %}
+{% assign link_parts = link | split: '/' %}
+{% capture admin_assets_svg_link %}{% for link_part in link_parts %}{% unless forloop.first == true %}/{% endunless %}{% unless forloop.last == true %}{{ link_part }}{% endunless %}{% endfor %}{% endcapture %}
+{% assign admin_assets_svg_link = admin_assets_svg_link | prepend: '//' %}
+{% unless admin_assets_svg_link contains '//' %}
+{% endunless %}
+{% endif %} 
+
+{% comment %}  check for svg and declare admin_assets_svg_link {% endcomment %}
+{% if link contains '/wp-content/uploads/' %}
+{% assign link_parts = link | split: '/' %}
+{% capture image_link %}{% for link_part in link_parts %}{% unless forloop.first == true %}/{% endunless %}{% unless forloop.last == true %}{{ link_part }}{% endunless %}{% endfor %}{% endcapture %}
+{% unless image_link contains '//' %}
+{% assign image_link = image_link | prepend: '//' %}
+{% endunless %}
+{% endif %} 
+
+{% endfor %}
+
+{% comment %} get file structure and declare file_structure {% endcomment %}
+{% capture file_structure %}{{ '' | file_url }}{% endcapture %}
+{% assign file_structure = file_structure | split: '?' %} 
+{% assign file_structure = file_structure[0] %} 
+
+{% comment %} get theme asset structure and declare asset_structure {% endcomment %}
+{% capture theme_file_structure %}{{ 'transparent.png' | asset_url }}{% endcapture %}
+{% assign theme_file_structure = theme_file_structure | split: '?' %} 
+{% assign theme_file_structure = theme_file_structure[0] %} 
+{% assign theme_file_structure = theme_file_structure | split: 'transparent.png' %} 
+{% assign assets_structure = theme_file_structure[0] %} 
+
+
+
+{% comment %} see if it has close tag {% endcomment %}
+{% assign slider_html_with_script_test = section.settings.rev | split: '<script' %}
+{% assign slider_html_with_script_test = slider_html_with_script_test[1] | slice: 0 %}
+{% if slider_html_with_script_test == '>' %}
+  {% assign fromBody = true %}
+{% else %} 
+  {% assign fromBody = false %}
+{% endif %}
+
+
+
+
+{% assign slider_html_with_script = section.settings.rev | split: '<!-- END REVOLUTION SLIDER -->' %}
+{% assign slider_html = slider_html_with_script[0] %}
+
+
+{% comment %} replace all links {% endcomment %}
+{% if admin_assets_svg_link %}
+{% assign slider_html =  slider_html | replace: admin_assets_svg_link, file_structure %}
+{% endif %}
+{% if image_link %}
+{% assign slider_html =  slider_html | replace: image_link, file_structure %}
+{% endif %}
+{% if admin_assets_images_link %}
+{% assign slider_html =  slider_html | replace: admin_assets_images_link, assets_structure %}
+{% endif %}
+
+
+{% comment %}  get all the duplicates out {% endcomment %}
+{% for i in (1..30) %}
+{% assign png = i | prepend: '-' | append: '.png' %}
+{% assign jpg = i | prepend: '-' | append: '.jpg' %}
+{% assign slider_html =  slider_html | replace: png, '.png' %}
+{% assign slider_html =  slider_html | replace: jpg, '.jpg' %}
+{% endfor %}
+
+
+{% assign slider_html =  slider_html | remove: 'target="_self"' %}
+
+
+{% comment %}  lets get all scripts and store them in  {{ slider_js }} {{ slider_init_js }} {% endcomment %} 
+{% assign slider_js = '' %}
+{% assign slider_init_js = '' %}
+{% assign slider_js_parts = section.settings.rev | split: '</script>' %}
+  {% for script_part in slider_js_parts %}
+    {% unless script_part contains 'setREVStartSize' %}
+    {% unless script_part contains '<script id="rs-initialisation-scripts">' %}
+        {% assign script_to_start = script_part | split: '<script>' %}
+        {% assign slider_js = slider_js | append: ' ' | append: script_to_start.last %}
+      {% else %}
+      {% assign script_to_start = script_part | split: '<script id="rs-initialisation-scripts">' %}
+      {% assign slider_init_js  = slider_init_js | append: script_to_start.last %}
+    {% endunless %}
+  {% endunless %}
+  {% endfor %}
+
+
+  {% comment %}  get api name save as  {{ slider_api }} {% endcomment %} 
+{% assign slider_api = '' %}
+{% assign slider_api_parts = slider_init_js | split: 'revapi:' %}
+{% assign slider_api_parts = slider_api_parts[1] %}
+{% assign slider_api_parts = slider_api_parts | split: ',' %}
+{% assign slider_api_parts = slider_api_parts[0] %}
+{% assign slider_api = slider_api_parts | remove: '"' %}
+
+
+{% comment %}  separate any css and store them in  {{ slider_stylesheets }} {% endcomment %}
+{% assign slider_stylesheets = '' %}
+{% assign slider_with_style = section.settings.rev | split: '<link' %}
+  {% for style_part in slider_with_style %}
+    {% if style_part contains 'stylesheet' %}
+      {% unless style_part contains 'rs-plugin-settings-css' %}
+       {% assign stylesheet_part = style_part | split: '>' %}
+        {% assign this_stylesheet = stylesheet_part[0] | prepend: '<link ' | append: '>' %}
+        {% assign slider_stylesheets = slider_stylesheets | append: this_stylesheet %}
+      {% endunless %}
+    {% endif %}
+  {% endfor %}
+
+ {% comment %} get any loose styles and store them in {{ slider_styles }} {% endcomment %}
+ {% assign slider_styles = '' %}
+ {% assign slider_with_style = section.settings.rev | split: "<style id='rs-plugin-settings-inline-css' type='text/css'>" %}
+   {% for style_part in slider_with_style %}
+     {% if style_part contains '</style>' %}
+        {% assign stylesheet_part = style_part | split: '</style>' %}
+         {% assign this_style = stylesheet_part[0] %}
+         {% assign slider_styles = slider_styles | append: this_style %}
+     {% endif %}
+   {% endfor %}
+   {% if slider_styles != nil  %}
+   {% assign slider_styles = slider_styles | prepend: '<style>' | append: '</style>' %}
+   {% endif %}
+
+
+
+
+
+
+{% if section.settings.wait_slider %}
+{% unless slider_init_js contains 'waitForInit' %}
+  {% assign slider_init_js = slider_init_js | replace: '.revolutionInit({', '.revolutionInit({waitForInit: true,' %}
+{% endunless %}
+{% endif %}
+
+
+
+
+
+{% comment %} separate setREVstartSize {% endcomment %}
+{% assign slider_js_split = slider_js | split: 'setREVStartSize' %} 
+{% assign setREVStartSize = slider_js_split[1] %}
+{% assign setREVStartSize = setREVStartSize | split: ';' %}
+{% assign setREVStartSize = setREVStartSize[0] | prepend: 'setREVStartSize' | append: ';' %}
+{% assign slider_js = slider_js | replace: setREVStartSize, '' %}
+
+{% comment %} get api name {% endcomment %} 
+
+
+
+<script>
+
+  function loadjscssfile(filename, filetype){
+    if (filetype=="js"){ //if filename is a external JavaScript file
+        var fileref=document.createElement('script')
+        fileref.setAttribute("type","text/javascript")
+        fileref.setAttribute("src", filename)
+    }
+    else if (filetype=="css"){ //if filename is an external CSS file
+        var fileref=document.createElement("link")
+        fileref.setAttribute("rel", "stylesheet")
+        fileref.setAttribute("type", "text/css")
+        fileref.setAttribute("href", filename)
+    }
+    if (typeof fileref!="undefined")
+        document.getElementsByTagName("head")[0].appendChild(fileref)
+}  
+
+
+
+
+if(typeof setREVStartSize !== 'function') { 
+ 
+
+loadjscssfile("{{ 'rbtools.min.js' | asset_url }}", "js") 
+loadjscssfile("{{ 'rs6.min.js' | asset_url }}", "js") 
+loadjscssfile("{{ 'rs6.css' | asset_url }}", "css") 
+
+function setREVStartSize(e){
+  //window.requestAnimationFrame(function() {
+    window.RSIW = window.RSIW===undefined ? window.innerWidth : window.RSIW;
+    window.RSIH = window.RSIH===undefined ? window.innerHeight : window.RSIH;
+    try {
+      var pw = document.getElementById(e.c).parentNode.offsetWidth,
+        newh;
+      pw = pw===0 || isNaN(pw) || (e.l=="fullwidth" || e.layout=="fullwidth") ? window.RSIW : pw;
+      e.tabw = e.tabw===undefined ? 0 : parseInt(e.tabw);
+      e.thumbw = e.thumbw===undefined ? 0 : parseInt(e.thumbw);
+      e.tabh = e.tabh===undefined ? 0 : parseInt(e.tabh);
+      e.thumbh = e.thumbh===undefined ? 0 : parseInt(e.thumbh);
+      e.tabhide = e.tabhide===undefined ? 0 : parseInt(e.tabhide);
+      e.thumbhide = e.thumbhide===undefined ? 0 : parseInt(e.thumbhide);
+      e.mh = e.mh===undefined || e.mh=="" || e.mh==="auto" ? 0 : parseInt(e.mh,0);
+      if(e.layout==="fullscreen" || e.l==="fullscreen")
+        newh = Math.max(e.mh,window.RSIH);
+      else{
+        e.gw = Array.isArray(e.gw) ? e.gw : [e.gw];
+        for (var i in e.rl) if (e.gw[i]===undefined || e.gw[i]===0) e.gw[i] = e.gw[i-1];
+        e.gh = e.el===undefined || e.el==="" || (Array.isArray(e.el) && e.el.length==0)? e.gh : e.el;
+        e.gh = Array.isArray(e.gh) ? e.gh : [e.gh];
+        for (var i in e.rl) if (e.gh[i]===undefined || e.gh[i]===0) e.gh[i] = e.gh[i-1];
+                  
+        var nl = new Array(e.rl.length),
+          ix = 0,
+          sl;
+        e.tabw = e.tabhide>=pw ? 0 : e.tabw;
+        e.thumbw = e.thumbhide>=pw ? 0 : e.thumbw;
+        e.tabh = e.tabhide>=pw ? 0 : e.tabh;
+        e.thumbh = e.thumbhide>=pw ? 0 : e.thumbh;
+        for (var i in e.rl) nl[i] = e.rl[i]<window.RSIW ? 0 : e.rl[i];
+        sl = nl[0];
+        for (var i in nl) if (sl>nl[i] && nl[i]>0) { sl = nl[i]; ix=i;}
+        var m = pw>(e.gw[ix]+e.tabw+e.thumbw) ? 1 : (pw-(e.tabw+e.thumbw)) / (e.gw[ix]);
+        newh =  (e.gh[ix] * m) + (e.tabh + e.thumbh);
+      }
+      var el = document.getElementById(e.c);
+      if (el!==null && el) el.style.height = newh+"px";
+      el = document.getElementById(e.c+"_wrapper");
+      if (el!==null && el) {
+        el.style.height = newh+"px";
+        el.style.display = "block";
+      }
+    } catch(e){
+      console.log("Failure at Presize of Slider:" + e)
+    }
+  //});
+  };
+}
+</script>
+
+{{ slider_stylesheets }}
+{{ slider_styles }}
+
+{{ slider_html }}
+<script> 
+  {{ slider_js }}
+
+  {{ slider_init_js }} 
+
+{% if section.settings.wait_slider %}
+  // Select the HTML element
+const html = document.querySelector('html');
+
+// Create a new MutationObserver instance
+const observer = new MutationObserver(mutations => {
+  // Loop through the mutations to check for added class names
+  mutations.forEach(mutation => {
+    // Check if the mutation type is 'attributes' and the class name 'loadedscroll' has been added
+    if (mutation.type === 'attributes' && mutation.attributeName === 'class' && html.classList.contains('loadedscroll')) {
+      {{ slider_api }}.revstart();  
+      // Do something else here
+    }
+  });
+});
+
+// Configure the observer to watch for attribute changes to the class attribute
+observer.observe(html, { attributes: true, attributeFilter: ['class'] });
+{% endif %}
+</script>
+
+
+{% else %}
+<div class="emptyRev">
+ <span>
+ Please Enter Slider HTML/JS 
+ </span>
+</div>
+{% endunless %}
+{% endif %} 
+
+{% schema %}
+  {
+    "name": "Slider 6",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Customize Your Slider"
+      },
+      {
+        "type": "paragraph",
+        "content": "Your Design comes with a premium animation slider thats very difficult to customize, so we added a simpler basic slider you can swap into when you need to display your own simple banners, it can be activated at any time and replace the premium slider for promotions and other ideas. (Please upload at least 1920w by 1200h image"
+      },
+      {
+        "type": "checkbox",
+        "id": "activate_slider",
+        "label": "Activate Basic Slider",
+        "default": false
+      },
+      {
+        "type": "liquid",
+        "id": "rev",
+        "label": "Slider HTML"
+      },
+      {
+        "type": "checkbox",
+        "id": "wait_slider",
+        "label": "Wait for Page Load",
+        "default": true
+      }
+     ],
+     "blocks": [
+     {
+     "type": "Slider",
+     "name": "Slide",
+     "settings" : [
+      {
+       "id": "slide_image",
+       "type": "image_picker",
+       "label": "Slide Image"
+      },
+      {
+       "id": "slide_url",
+       "type": "url",
+       "label": "Slide Link"
+      }
+     ]
+    } 
+   ],
+  "presets": [
+    {
+      "name": "Animated Slider v6",
+      "category": "Design"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+.emptyRev {
+display:flex;
+justify-content:center;
+margin:0 auto;
+padding:100px 20px;
+& span {
+border: 3px solid red;
+padding: 20px 35px;
+}
+}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,91 @@
+{{ 'video-with-preview.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'video-with-preview.js' | asset_url }}" defer="defer"></script>
+
+  {%- style -%}
+
+    
+  @media screen and (max-width: 749px) {
+    .Preview_preview__ {
+      width:100%;
+    }
+  }
+  {%- endstyle -%}
+
+<div class="Container_container__">
+  <div class="Hero_content__">
+<div class="Hero_title__">
+
+</div>
+
+
+<div class="Preview_preview__" style="transform: none; transform-origin: 50% 50% 0px;">
+  <div class="Preview_overlay__"></div>
+  <div class="Preview_hover__">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"><path d="M 12 2 L 2 12" fill="transparent" stroke-width="1.5" stroke="hsl(0, 0%, 100%)" stroke-linecap="round"></path><path d="M 13 7 L 13 1 L 7 1" fill="transparent" stroke-width="1.5" stroke="hsl(0, 0%, 100%)" stroke-linecap="round"></path><path d="M 1 7 L 1 13 L 7 13" fill="transparent" stroke-width="1.5" stroke="hsl(0, 0%, 100%)" stroke-linecap="round"></path></svg>
+  </div>
+  <div class="Preview_videoPlayer__">
+    <div>
+      <iframe class="Preview_videoContainer__" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" title="Amie Beta Launch" width="640" height="360" 
+        src="https://www.youtube.com/embed/{% if section.settings.video_url.id == blank %}yqWX86uT5jM{% else %}{{ section.settings.video_url.id }}{% endif %}?loop=1&modestbranding=1&playsinline=1&controls=0&autoplay=1&mute=1&enablejsapi=1&origin={{ shop.url }}" id="widget{{ section.id }}" data-gtm-yt-inspected-4="true"></iframe>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+
+
+{%- if request.design_mode -%}
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Video with Preview",
+      "tag": "section",
+  "class": "section",
+    "settings": [
+{
+  "type": "video_url",
+  "id": "video_url",
+  "label": "Youtube Url",
+  "accept": [
+    "youtube"
+  ]
+},
+      {
+        "type": "text",
+        "id": "width",
+        "label": "Video Width"
+      },
+        {
+          "type": "select",
+          "id": "alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "left"
+            },
+            {
+              "value": "center",
+              "label": "center"
+            },
+            {
+              "value": "right",
+              "label": "right"
+            }
+          ],
+          "default": "left",
+          "label": "Alignment",
+          "info": "Video Alignment"
+        }
+    ],
+      "presets": [
+    {
+      "name": "Video with Preview",
+      "category": "Design"
+    }
+  ]
+  }
+{% endschema %}

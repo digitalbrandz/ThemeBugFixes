@@ -1,0 +1,101 @@
+
+{%- style -%}
+  @media screen and (min-width: 900px) {
+    #shopify-section-{{ section.id }} .borrow-confidence li > * { 
+      max-width: {{ section.settings.max_width }}px;
+    }
+  }   
+{%- endstyle -%}
+
+
+
+<div class="Container_container__ borrow-confidence">
+  <div class="Hero_content__">
+<div class="Hero_title__">
+   <h2>{{ section.settings.borrow_confidence_title }}</h2>
+</div>
+
+<div class="logo_container page-width">
+    <ul>
+        {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'logo' %}
+                <li>
+                    {%- if block.settings.svg != blank -%}    
+                    <span>   {{ block.settings.svg }} </span>
+                    {%- else -%}
+                       {%- if block.settings.image != blank -%} 
+                        <span> <img src="{{ block.settings.image | img_url: 'large' }}" /></span>
+                       {%- else -%}
+                        
+                       {%- endif -%}    
+                    {%- endif -%}    
+                </li>
+              {% endcase %}
+            {% endfor %}
+    </ul>
+</div>
+
+
+</div>
+</div>
+
+
+
+{%- if request.design_mode -%}
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Borrow Confidence",
+      "tag": "section",
+  "class": "section",
+    "settings": [
+        {
+            "type": "text",
+            "id": "borrow_confidence_title",
+            "label": "Heading",
+            "default": "Also Seen on"
+          },
+          {
+            "type": "range",
+            "id": "max_width",
+            "min": 25,
+            "max": 200,
+            "step": 5,
+            "unit": "px",
+            "label": "Max Logo Width",
+            "default": 100
+          }
+    ],
+    "blocks": [
+        {
+          "name": "Logo",
+          "type": "logo",
+          "settings": [
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+            },
+            {
+                "type": "textarea",
+                "id": "svg",
+                "label": "SVG"
+            },
+            {
+                "type": "text",
+                "id": "title",
+                "label": "title"
+            }
+          ]
+        }
+     ],
+      "presets": [
+    {
+      "name": "Borrow Confidence",
+      "category": "Design"
+    }
+  ]
+  }
+{% endschema %}
