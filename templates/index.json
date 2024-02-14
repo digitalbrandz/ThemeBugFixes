@@ -53,6 +53,7 @@
         "36da6ab7-d774-410b-992f-3de711734387": {
           "type": "Text",
           "settings": {
+            "customid": "",
             "text": "<p>SPEAKER<\/p>",
             "color": "#ffffff",
             "layout": "right",
@@ -63,6 +64,7 @@
         "text_9EUkWX": {
           "type": "Text",
           "settings": {
+            "customid": "",
             "text": "<p>A highly coveted speaker, host, and interview subject, Berto shares his inspirational story of success to audiences worldwide. A son of two hard working Haitian immigrants, Berto has created a life that many dream of, through hard work, dedication and the desire to learn and grow every single day. <\/p>",
             "color": "#ffffff",
             "layout": "right",
@@ -73,6 +75,7 @@
         "text_UUFP3U": {
           "type": "Text",
           "settings": {
+            "customid": "",
             "text": "",
             "color": "#000000",
             "layout": "center",
@@ -83,6 +86,7 @@
         "1c74b7d4-3994-4f3e-a698-1da9a51fbe7d": {
           "type": "Button",
           "settings": {
+            "customid": "",
             "link": "",
             "label": "See More",
             "color": "#000000",
@@ -116,6 +120,7 @@
         "83bde535-d9bf-4776-84d5-30970b92e29f": {
           "type": "Text",
           "settings": {
+            "customid": "block-83bde535-d9bf-4776-84d5-30970b92e29f",
             "text": "<p>CREATOR<br\/>& PRODUCER<\/p>",
             "color": "#ffffff",
             "layout": "left",
@@ -126,6 +131,7 @@
         "e42d7ce3-e75b-4e62-ae31-eb85cb419ed1": {
           "type": "Text",
           "settings": {
+            "customid": "",
             "text": "<p>During his boxing days, Andre Berto was a media and celebrity darling due to his engaging personality and heartwarming backstory. Now a producer, interviewer and host, Berto shares unique content including in depth celebrity interviews with his vast network of athletes and entertainers, his own cooking show Champs Kitchen and much more. <\/p>",
             "color": "#ffffff",
             "layout": "left",
@@ -136,6 +142,7 @@
         "9984b3d3-3364-4209-aa24-8926775e1d4c": {
           "type": "Button",
           "settings": {
+            "customid": "",
             "link": "https:\/\/www.youtube.com\/c\/AndreBertoTV",
             "label": "ANDRE BERTO TV",
             "color": "#000000",
