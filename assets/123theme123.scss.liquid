@@ -23,6 +23,260 @@
   /*================ Animation related mixins ================*/
   /*================ Functions ================*/
   /*================ Font stack mixins ================*/
+/*================ Color variables ================*/
+
+// Button colors
+
+$colorBtnPrimary: {{ settings.color_button | default: '#000' }};
+
+$colorBtnPrimaryText: {{ settings.color_button_text | default: '#fff' }};
+
+$colorCartDot: {{ settings.color_cart_dot | default: '#ff4f33' }};
+
+// Text link colors
+
+$colorLink: {{ settings.color_body_text | default: '#1c1d1d' }};
+
+// Text colors
+
+$colorTextBody: {{ settings.color_body_text | default: '#1c1d1d' }};
+
+$colorPrice: {{ settings.color_price | default: '#1c1d1d' }};
+
+$colorTextSavings: {{ settings.color_savings_text | default: '#1c1d1d' }};
+
+// Backgrounds
+
+$colorBody: {{ settings.color_body_bg | default: '#fff' }};
+
+$colorInputBg: {{ settings.color_body_bg | default: '#1c1d1d' }};
+
+// Footer
+
+$colorFooter: {{ settings.color_footer | default: '#111' }};
+
+$colorFooterText: {{ settings.color_footer_text | default: '#fff' }};
+
+// Border colors
+
+$colorBorder: {{ settings.color_borders | default: '#1c1d1d' }};
+
+// Nav and dropdown link background
+
+$colorNav: {{ settings.color_header | default: '#fff' }};
+
+$colorNavText: {{ settings.color_header_text | default: '#000' }};
+
+$colorAnnouncement: {{ settings.color_announcement | default: '#1c1d1d' }};
+
+$colorAnnouncementText: {{ settings.color_announcement_text | default: '#fff' }};
+
+$colorStickyNavLinks: #fff;
+
+// Hero text color
+
+$colorHeroText: {{ settings.color_image_text | default: '#fff' }};
+
+// Helper colors
+
+$disabledGrey: #f6f6f6;
+
+$disabledBorder: darken($disabledGrey, 25%);
+
+$errorRed: #d02e2e;
+
+$errorRedBg: #fff6f6;
+
+$successGreen: #56ad6a;
+
+$successGreenBg: #ecfef0;
+
+// Content spacing
+
+$contentTopMargin: 70px;
+
+$contentTopMarginSmall: 40px;
+
+// Section header & collection image
+
+$sectionHeaderBottom: 50px;
+
+$sectionHeaderBottomSmall: 30px;
+
+// Slideshow colors
+
+$slideshow-text-light: #fff;
+
+$slideshow-text-dark: #000;
+
+// Modal
+
+$colorModalBg: {{ settings.color_modal_overlays | default: '#000' }};
+
+$colorModalText: #fff;
+
+// Image overlays
+
+$colorImageOverlay: {{ settings.color_image_overlay | default: '#000' }};
+
+$colorImageOverlayOpacity: {{ settings.color_image_overlay_opacity | divided_by: 100.0 }};
+
+$colorImageOverlayTextShadow: {{ settings.color_image_overlay_text_shadow | divided_by: 100.0 }};
+
+$colorSmallImageBg: {{ settings.color_small_image_bg | default: '#eee' }};
+
+$colorLargeImageBg: {{ settings.color_large_image_bg | default: '#1c1d1d' }};
+
+$colorGridOverlay: {{ settings.collection_grid_tint | default: '#000' }};
+
+$colorGridOverlayOpacity: {{ settings.collection_grid_opacity | divided_by: 100.0 }};
+
+// Button style
+
+$buttonStyle: {{ settings.button_style | default: 'square' }};
+
+$buttonSkew: 12;
+
+// Icon sizes
+
+$desktopMenuIconSize: 30px;
+
+$desktopMenuChevronSize: 10px;
+
+$colorSwatchCollectionSize: 15px;
+
+$colorSwatchCollectionSizeLarge: 19px;
+
+$colorSwatchSidebarSize: 35px;
+
+$swatchStyle: {{ settings.swatch_style | default: 'square' }};
+
+$siteNavItemPadding: 15px;
+
+$siteNavIconPadding: 12px;
+
+// Z-index
+
+$zindexNavDropdowns: 5;
+
+$zindexDrawer: 30;
+
+$zindexDrawerOverlay: 26;
+
+$zindexModal: 25;
+
+$zindexSkipToContent: 10000;
+
+$z-index-sticky-header: 6;
+
+$z-index-stuck-header: 20;
+
+$z-index-header-search: 28;
+
+$z-index-loader: 4;
+
+/*================ Typography ================*/
+
+// Font-face header styles
+
+$type_header_family: {{ settings.type_header_font_family.family }};
+
+$type_header_fallback: {{ settings.type_header_font_family.fallback_families }};
+
+$type_header_stack: #{"'" + $type_header_family + "', " + $type_header_fallback};
+
+$type_header_weight: {{ settings.type_header_font_family.weight }};
+
+// Non font-face header styles
+
+$type_header_line_height: {{ settings.type_header_line_height | default: 1.4 }};
+
+$type_header_text_center: {{ settings.type_headers_align_text | default: false }};
+
+$type_header_base_size: {{ settings.type_header_base_size | default: 32 }}px;
+
+$type_header_spacing: {{ settings.type_header_spacing | default: "25" | divided_by: 1000.00 }}em;
+
+$type_header_capitalize: {{ settings.type_header_capitalize | default: false }};
+
+// Font-face base styles
+
+$type_base_family: {{ settings.type_base_font_family.family }};
+
+$type_base_fallback: {{ settings.type_base_font_family.fallback_families }};
+
+$type_base_stack: #{"'" + $type_base_family + "', " + $type_base_fallback};
+
+$type_base_weight: {{ settings.type_base_font_family.weight }};
+
+// Non font-face base styles
+
+$type_body_text_center: {{ settings.type_body_align_text | default: false }};
+
+$type_base_spacing: {{ settings.type_base_spacing | default: "50" | divided_by: 1000.00 }}em;
+
+$type_base_line_height: {{ settings.type_base_line_height | default: 1.4 }};
+
+$type_base_size: {{ settings.type_base_size | default: 16 }}px;
+
+$icon_weight: {{ settings.icon_weight | default: '5px' }};
+
+$icon_linecaps: {{ settings.icon_linecaps | default: 'miter' }};
+
+/*================ Font stack mixins ================*/
+
+@mixin baseFontStack {
+  font-size: $type_base_size * 0.85;
+  font-family: $type_base_stack;
+  letter-spacing: $type_base_spacing;
+  line-height: $type_base_line_height;
+
+  @include media-query($medium-up) {
+    font-size: $type_base_size;
+  }
+}
+
+@mixin baseSmallFontStack {
+  font-size: $type_base_size * 0.85;
+}
+
+@mixin baseExtraSmallFontStack {
+  font-size: $type_base_size * 0.7;
+}
+
+@mixin headingTextCenter {
+  @if ($type_header_text_center) {
+    text-align: center;
+  }
+}
+
+@mixin baseTextCenter {
+  @if ($type_body_text_center) {
+    text-align: center;
+  }
+}
+
+@mixin headingFontStack {
+  font-family: $type_header_stack;
+  font-weight: $type_header_weight;
+  letter-spacing: $type_header_spacing;
+  line-height: $type_header_line_height;
+
+  @if ($type_header_capitalize) {
+    text-transform: uppercase;
+  }
+}
+
+@mixin accentFontStack {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+@mixin accentFontSmallSize {
+  font-size: 0.8em;
+}
+
+
   /*================ Animations and keyframes ================*/
   @-webkit-keyframes spin {
     0% {
@@ -1435,14 +1689,19 @@
       border-bottom: 1px solid var(--shopify-editor-setting-color_borders);
     }
   }
-  body, input, textarea, button, select {
-    font-size: 13.6px;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 0.05em;
-    line-height: 1.4;
+  body,
+  input,
+  textarea,
+  button,
+  select {
+    @include baseFontStack;
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeSpeed;
+  }
+  
+  body {
+    font-weight: $type_base_weight;
   }
   @media only screen and (min-width: 769px) {
     body, input, textarea, button, select {
