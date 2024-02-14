@@ -202,7 +202,7 @@
           "logo_social_Ux9Pjw": {
             "type": "logo_social",
             "settings": {
-              "logo": "shopify:\/\/shop_images\/logo.png",
+              "logo": "shopify:\/\/shop_images\/favicon.png",
               "desktop_logo_height": 78,
               "container_width": 30
             }
