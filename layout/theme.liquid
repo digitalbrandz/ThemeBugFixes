@@ -254,7 +254,7 @@
       }
     {% endstyle %}
 
-
+{{ 'vendor-styles.css' | asset_url | stylesheet_tag }}
 {{ '123theme123.css' | asset_url | stylesheet_tag }}
   
     {{ 'base.css' | asset_url | stylesheet_tag }}
