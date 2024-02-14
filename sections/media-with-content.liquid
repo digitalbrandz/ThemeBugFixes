@@ -58,7 +58,7 @@
 
 {% if section.settings.divider %}<div class="section--divider">{% endif %}
 
-<div id="{{ section.settings.customid }}" class="page-width mwcnew">
+<div id="{{ section.settings.customid }}" class="mwcnew">
   {% capture image_layout %}
    {% unless section.settings.mp4 != blank %}
     <div class="feature-row__item main"   {% if section.settings.layout == 'right' %} data-aos="fade-left" {% else %}data-aos="fade-right" {% endif %} data-aos-duration="700"
