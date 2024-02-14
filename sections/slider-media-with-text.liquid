@@ -38,12 +38,12 @@ background-image:url({{ section.settings.background_image | img_url: '1024x1024'
 
 
 {% if section.settings.divider %}<div class="section--divider blank bottom">{% endif %}
-{% if section.settings.title_top != blank %}
-<div class="page-width">
-  <h2 class="text-center title_top section-header">{{ section.settings.title_top }}</h2>
-</div>
-{% endif %}
 <div id="{{ section.settings.customid }}" class="mwcnew page-width">
+  {% if section.settings.title_top != blank %}
+    <div class="page-width">
+      <h2 class="text-center title_top section-header">{{ section.settings.title_top }}</h2>
+    </div>
+    {% endif %}
   {{ section.blocks.type }}
   {% if hasTitle == true %}
     <div class="section-header">
