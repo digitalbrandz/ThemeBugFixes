@@ -75,7 +75,7 @@
         "text_UUFP3U": {
           "type": "Text",
           "settings": {
-            "customid": "",
+            "customid": "block-text_UUFP3U",
             "text": "",
             "color": "#000000",
             "layout": "center",
@@ -86,7 +86,7 @@
         "1c74b7d4-3994-4f3e-a698-1da9a51fbe7d": {
           "type": "Button",
           "settings": {
-            "customid": "",
+            "customid": "block-1c74b7d4-3994-4f3e-a698-1da9a51fbe7d",
             "link": "",
             "label": "See More",
             "color": "#000000",
