@@ -30,7 +30,7 @@
           <input type="hidden" name="contact[tags]" value="prospect,newsletter">
           <input type="hidden" name="contact[context]" value="footer">
           <div class="footer__newsletter">
-            <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="Enter your email" name="contact[email]" id="Email-{{ block.id }}" class="footer__newsletter-input" autocorrect="off" autocapitalize="off">
+            <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="Email-{{ block.id }}" class="footer__newsletter-input" autocorrect="off" autocapitalize="off">
             <button type="submit" class="footer__newsletter-btn" name="commit">
               {% include 'icon-email' %}
               <span class="footer__newsletter-btn-label">

@@ -48,7 +48,6 @@
       {% endunless %}
         }
 {% endfor %} 
-  
 
 {% if section.settings.css != nil %}
 {% assign css = section.settings.css | replace: '&gt;','>' %}
@@ -58,7 +57,7 @@
 
 {% if section.settings.divider %}<div class="section--divider">{% endif %}
 
-<div id="{{ section.settings.customid }}" class="mwcnew">
+<div class="page-width">
   {% capture image_layout %}
    {% unless section.settings.mp4 != blank %}
     <div class="feature-row__item main"   {% if section.settings.layout == 'right' %} data-aos="fade-left" {% else %}data-aos="fade-right" {% endif %} data-aos-duration="700"
@@ -77,7 +76,7 @@
           </div>
           {% if section.settings.button_label != blank and section.settings.button_link != blank %}</a>{% endif %}
         {% else %}
-          <div id="block-4d7fc171-a36e-401b-badc-7e8fd9e15e8b" class="image-wrap">
+          <div class="image-wrap">
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}
@@ -131,7 +130,7 @@
       
         {% if block.settings.image != blank %}
           {% if block.settings.link != blank %}<a class="hvr-grow" href="{{ block.settings.link }}">{% endif %}
-          <div {% if block.settings.customid != blank %} id="{{ block.settings.customid }}"{% else %} id="{{ block.id }}" {% endif %} data-aos-delay="{{ delay }}" {% if section.settings.layout == 'right' %} data-aos="fade-right"  {% else %}data-aos="fade-left" {% endif %} data-aos-duration="700"
+          <div data-aos-delay="{{ delay }}" {% if section.settings.layout == 'right' %} data-aos="fade-right"  {% else %}data-aos="fade-left" {% endif %} data-aos-duration="700"
     data-aos-easing="ease-out-cubic" id="block-{{ block.id }}" class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
             {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
             <img class="feature-row__image lazyload"
@@ -160,7 +159,7 @@
           <div class="rte featured-row__subtext">{{ block.settings.text }}</div>
          </div>        
         {% when 'HTML' %}  
-        <div id="block-76a2109a-edb8-4398-a71e-d5aff804b6ca"  data-aos-delay="{{ delay }}" {% if section.settings.layout == 'right' %} data-aos="fade-right"  {% else %}data-aos="fade-left" {% endif %} data-aos-duration="700"
+        <div data-aos-delay="{{ delay }}" {% if section.settings.layout == 'right' %} data-aos="fade-right"  {% else %}data-aos="fade-left" {% endif %} data-aos-duration="700"
     data-aos-easing="ease-out-cubic"  id="block-{{ block.id }}">
           {{ block.settings.html }}
         </div>  
@@ -288,7 +287,7 @@
 {% schema %}
 
   {
-    "name": "Media With Content New",
+    "name": "Media With Content",
     "class": "media-with-content",
     "settings": [
 {
@@ -299,11 +298,6 @@
        "id": "image",
        "type": "image_picker",
        "label": "Image"
-},
-      {
-       "id": "customid",
-       "type": "text",
-       "label": "Custom Css ID"
 },
 {
        "id": "mp4",
@@ -369,11 +363,6 @@
      "type": "Image",
      "name": "Image",
      "settings" : [
-      {
-        "id": "customid",
-        "type": "text",
-        "label": "Custom Css ID"
- },     
 {
        "id": "image",
        "type": "image_picker",
@@ -430,11 +419,6 @@
      "type": "Button",
      "name": "Button",
      "settings" : [
-      {
-        "id": "customid",
-        "type": "text",
-        "label": "Custom Css ID"
- },
 {
        "id": "link",
        "type": "url",
@@ -494,11 +478,6 @@
      "type": "Media",
      "name": "Media",
      "settings" : [
-      {
-        "id": "customid",
-        "type": "text",
-        "label": "Custom Css ID"
- },
  {
         "type": "video_url",
         "id": "video_url",
@@ -551,11 +530,6 @@
      "type": "Text",
      "name": "Text",
      "settings" : [
-      {
-        "id": "customid",
-        "type": "text",
-        "label": "Custom Css ID"
- },
 {
        "id": "text",
        "type": "richtext",
@@ -603,11 +577,6 @@
      "type": "HTML",
      "name": "HTML (Advanced)",
      "settings" : [
-      {
-        "id": "customid",
-        "type": "text",
-        "label": "Custom Css ID"
- },
 {
        "id": "html",
        "type": "html",
@@ -637,7 +606,7 @@
 ],
   "presets": [
     {
-      "name": "Media With Content New",
+      "name": "Media With Content",
       "category": "z Designer"
     }
   ]

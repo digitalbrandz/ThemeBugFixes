@@ -1,0 +1,336 @@
+ <ul class="reviews-wrap row">
+  
+   
+        {% for block in section.blocks %}
+          {% case block.type %}
+             {% when 'Review' %}  
+   
+  <li class="review-wrap large-12 medium-12 small-12 review_1" itemscope itemtype="http://schema.org/Review">
+       <div class="row align-justify align-middle">
+           <div class="large-6 medium-6 small-12 columns text-center review_quote">
+            <div>
+             <q>{{ block.settings.quote  }}</q>
+             <span>- {{ block.settings.name  }}</span>
+              <a title="{{ block.settings.name }}"  data-fancybox href="{{ block.settings.video_url }}">Watch Review</a>
+            </div>
+           </div>
+           <div class="large-6 medium-6 small-12 columns">
+            <a title="{{ block.settings.name }}"  data-fancybox href="{{ block.settings.video_url }}" class="thumb flex-content">
+             <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="play" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-play fa-w-14 fa-3x"><path fill="currentColor" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6zM48 453.5v-395c0-4.6 5.1-7.5 9.1-5.2l334.2 197.5c3.9 2.3 3.9 8 0 10.3L57.1 458.7c-4 2.3-9.1-.6-9.1-5.2z" class=""></path></svg>
+             {% unless block.settings.mp4 %}
+                 {% capture image %}{{ block.settings.video_thumbnail | img_url: 'grande' }}{% endcapture %}  
+                 {% unless image contains 'no-image' %}
+                <img src="{{ block.settings.video_thumbnail | img_url: 'grande' }}" /> 
+                 {% else %}
+                <img src="https://i3.ytimg.com/vi/{{ block.settings.video_url.id }}/maxresdefault.jpg" />
+                {% endunless %}
+             {% else %}
+             <video preload="auto" class="" muted loop playsinline autoplay onclick="event.preventDefault();"> 
+               <source src="{{ block.settings.mp4 }}" type="video/mp4">
+             </video>
+             {% endunless %}
+           </a>
+           </div>
+           </div>
+           
+           <div class="hide">
+             <div itemprop="itemReviewed" itemscope itemtype="http://schema.org/HealthAndBeautyBusiness">
+                <img itemprop="image" src="{{ settings.home_image | img_url: 'master' }}" alt="{{ shop.name }}"/>
+                 <span itemprop="name">{{ shop.name }}</span>
+             </div>
+             <span itemprop="name">{{ block.settings.name }} reviews {{ shop.name }}</span>
+              <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <span itemprop="name">{{ block.settings.name }}</span>
+              </span>
+             <span itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+               <span itemprop="ratingValue">5</span>
+             </span>
+           </div>
+         </li>
+   
+           {% endcase %}
+      {% endfor %}
+
+</ul>
+
+{% schema %}
+  {
+    "name": "Reviews",
+    "settings": [
+      {
+        "id": "header",
+        "type": "text",
+        "label": "Title"
+      },{
+        "id": "subheader",
+        "type": "text",
+        "label": "Title Subheader"
+      }],
+"blocks": [
+    {
+     "type": "Review",
+     "name": "Review",
+     "settings" : [
+      {
+        "type": "text",
+        "id": "name",
+        "label": "Name"
+      },
+      {
+        "type": "textarea",
+        "id": "quote",
+        "label": "Quote"
+      },
+      {
+        "type": "header",
+        "content": "Thumbnail"
+      },
+      {
+       "id": "image",
+       "type": "image_picker",
+       "label": "Image"
+      },
+      {
+       "id": "mp4",
+       "type": "url",
+       "label": "Preview MP4 URL"
+      },
+      {
+        "type": "header",
+        "content": "Review"
+      },
+      {
+       "id": "video_url",
+       "type": "video_url",
+       "accept": ["youtube"],
+       "label": "Youtube URL",
+       "default": "https://www.youtube.com/watch?v=xgT4HDqNnyg"
+      }
+]
+  }
+ ]
+  }
+{% endschema %}
+
+{% stylesheet 'scss' %}
+// responsive sizes
+@mixin bp($point) {
+  
+  $bp-small: "(max-width: 350px)";
+  $bp-mobile: "(max-width: 600px)";
+  $bp-mobileup: "(min-width: 600px)";
+  $bp-phablet: "(max-width: 1022px)";
+  $bp-phabletup: "(min-width: 1022px)";
+  $bp-tablet: "(max-width: 1280px)";
+  $bp-tabletup: "(min-width: 1281px)";
+  $bp-laptop: "(max-width: 1600px)";
+  $bp-desktop: "(min-width: 1600px)";
+  @if $point == desktop {
+    @media #{$bp-desktop}  { @content; }
+  }  
+  @else if $point == laptop {
+    @media #{$bp-laptop} { @content; }
+  }
+  @else if $point == tablet {
+    @media #{$bp-tablet} { @content; }
+  }
+  @else if $point == tabletup {
+    @media #{$bp-tabletup} { @content; }
+  }
+  @else if $point == phablet {
+    @media #{$bp-phablet} { @content; }
+  }
+  @else if $point == phabletup {
+    @media #{$bp-phabletup} { @content; }
+  }
+  @else if $point == mobile {
+    @media #{$bp-mobile}  { @content; }
+  }
+  @else if $point == mobileup {
+    @media #{$bp-mobileup} { @content; }
+  }
+  @else if $point == small {
+    @media #{$bp-small}  { @content; }
+  }
+}
+
+
+#shopify-section-Video-Reviews {
+
+margin-top:40px;
+  .page-header {
+     h1 {
+        margin: .67em 0 0;
+    }
+  }
+
+
+.row {
+    max-width: 78.5rem;
+    margin-right: auto;
+    margin-left: auto;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+@media print, screen and (min-width: 64em) {
+.large-12 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 100%;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+}
+@media print, screen and (min-width: 40em) {
+.medium-12 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 100%;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+}
+.small-12 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 100%;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+.column, .columns {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 0%;
+    -ms-flex: 1 1 0%;
+    flex: 1 1 0%;
+    padding-right: 0.9375rem;
+    padding-left: 0.9375rem;
+    min-width: 0;
+}
+
+@media (min-width: 1281px) {
+.review-wrap:nth-child(odd) .row {
+    flex-flow: row-reverse;
+}
+}
+.row:not(.expanded) .row {
+    max-width: none;
+}
+@media print, screen and (min-width: 64em) {
+.row .row {
+    margin-right: -0.9375rem;
+    margin-left: -0.9375rem;
+}
+}
+@media print, screen and (min-width: 40em) {
+.row .row {
+    margin-right: -0.9375rem;
+    margin-left: -0.9375rem;
+}
+}
+.row .row {
+    margin-right: -0.9375rem;
+    margin-left: -0.9375rem;
+}
+.align-middle {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.align-justify {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+
+.flex-content {
+    position: relative;
+    height: 0;
+    padding-bottom: 56.25%;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    background: #F7F8FA;
+}
+.reviews-wrap {
+max-width: 60rem;
+}
+ .review-wrap {
+    list-style: none;
+    border-bottom: 1px solid rgba(0,0,0,0.09);
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    &:nth-child(odd) {
+     & .row {
+       @include bp(tabletup) {
+       flex-flow:row-reverse; 
+       }
+     }
+    }
+	& .review_quote {
+     @include bp(mobile) {
+     margin-bottom: 30px;
+    }
+     & q { 
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    display: block;
+    font-size: 27px;
+    font-style: italic;
+    margin-bottom: 5px;
+     }
+    & span {
+    display: block;
+    font-size: 17px;
+    font-family: 'Open Sans',sans-serif;
+     }
+    & a {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid rgba(0,0,0,0.16);
+    color: rgba(0,0,0,0.45);
+    font-weight: normal;
+    margin-top: 20px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    }
+    }
+    & .thumb {
+    position: relative;
+    display: block;
+    & video, & img {
+    width:100%;
+    pointer-events:none;
+    }
+     & svg {
+     max-width: 11%;
+    height: auto;
+    position: absolute;
+left: 45%;
+    top: 39%;
+      & path {
+        fill:#fff;
+        }
+      }
+
+    }
+  &:last-child {
+     border: none;
+   }
+ }
+}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}                                  

@@ -38,13 +38,12 @@ background-image:url({{ section.settings.background_image | img_url: '1024x1024'
 
 
 {% if section.settings.divider %}<div class="section--divider blank bottom">{% endif %}
-<div id="{{ section.settings.customid }}" class="mwcnew slider-media-with-text-section slider-section">
-  <div class="page-width">
-  {% if section.settings.title_top != blank %}
-    <div class="page-width">
-      <h2 class="text-center title_top section-header">{{ section.settings.title_top }}</h2>
-    </div>
-    {% endif %}
+{% if section.settings.title_top != blank %}
+<div class="page-width">
+  <h2 class="text-center title_top section-header">{{ section.settings.title_top }}</h2>
+</div>
+{% endif %}
+<div class="page-width">
   {{ section.blocks.type }}
   {% if hasTitle == true %}
     <div class="section-header">
@@ -52,7 +51,7 @@ background-image:url({{ section.settings.background_image | img_url: '1024x1024'
        {% case block.type %}
          {% when 'Title' %}
       <h2 data-aos="hero__animation"
-     data-aos-anchor-placement="top-bottom" {% if block.settings.customid != blank %} class="{{ block.settings.customid }}"{% else %} class="block-{{ block.id }}" {% endif %}  {% if forloop.first %}hero__title{% else %}hero__subtitle{% endif %}">
+     data-aos-anchor-placement="top-bottom" class="block-{{ block.id }} {% if forloop.first %}hero__title{% else %}hero__subtitle{% endif %}">
         <div class="animation-cropper"><div class="animation-contents"> {{ block.settings.title }}</div></div>
       </h2>
      {% endcase %}
@@ -111,8 +110,8 @@ background-image:url({{ section.settings.background_image | img_url: '1024x1024'
               {{ block.shopify_attributes }}
               class="slideshow__slide_blank slideshow__slide--{{ block.id }}"
               data-id="{{ block.id }}">
-        <div class="media-block feature-row" {% if block.settings.customid != blank %} id="{{ block.settings.customid }}"{% else %} id="block-{{ block.id }}" {% endif %} >
-          <div class="media2 feature-row__item">   
+        <div class="media-block feature-row" id="block-{{ block.id }}">
+          <div class="media feature-row__item">   
             
             {% if block.settings.youtube_url %}
             <a class="cover" data-fancybox href="{{ block.settings.youtube_url }}">
@@ -159,7 +158,9 @@ background-image:url({{ section.settings.background_image | img_url: '1024x1024'
             <div class="title">
               {{ block.settings.title }}
             </div>
+            <div class="text_bottom">
             {{ block.settings.text }}
+            </div>
           </div>
         </div>
       </div>
@@ -172,7 +173,6 @@ background-image:url({{ section.settings.background_image | img_url: '1024x1024'
   
 </div>
 </div>
-</div>
 
 {% if section.settings.divider %}</div>{% endif %}
 
@@ -180,8 +180,9 @@ background-image:url({{ section.settings.background_image | img_url: '1024x1024'
 {% schema %}
   {
     "name": "Slider Media with Text",
+    "class": "slider-media-with-text-section slider-section",
     "settings": [
-      {
+{
        "id": "title_top",
        "type": "text",
        "label": "Heading"
@@ -194,11 +195,6 @@ background-image:url({{ section.settings.background_image | img_url: '1024x1024'
        "id": "background_image",
        "type": "image_picker",
        "label": "Background Image (Optional)"
-},
-            {
-       "id": "customid",
-       "type": "text",
-       "label": "Custom Css ID"
 },
 {
        "id": "background_color",
@@ -324,7 +320,7 @@ background-image:url({{ section.settings.background_image | img_url: '1024x1024'
 ]}],
  "presets": [
     {
-      "name": "Slider Media With Text New",
+      "name": "Slider Media With Text",
       "category": "Z Designer"
     }
   ]

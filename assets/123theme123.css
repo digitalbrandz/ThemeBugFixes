@@ -1,19 +1,7 @@
 @charset "UTF-8";
-:root {
-  --shopify-editor-123theme123-accessed-settings: "color_button", "color_button_text", "color_cart_dot", "color_body_text", "color_price", "color_savings_text", "color_body_bg", "color_footer", "color_footer_text", "color_borders", "color_header", "color_header_text", "color_announcement", "color_announcement_text", "color_image_text", "color_modal_overlays", "color_image_overlay", "color_image_overlay_opacity", "color_image_overlay_text_shadow", "color_small_image_bg", "color_large_image_bg", "collection_grid_tint", "collection_grid_opacity", "button_style", "swatch_style", "type_header_font_family", "type_header_line_height", "type_headers_align_text", "type_header_base_size", "type_header_spacing", "type_header_capitalize", "type_base_font_family", "type_body_align_text", "type_base_spacing", "type_base_line_height", "type_base_size", "icon_weight", "icon_linecaps", "color_drawer_background", "color_drawer_border", "color_drawer_text", "color_drawer_button", "color_drawer_button_text", "ajax-loader.gif";
-}
-
-:root {
-  --shopify-editor-123theme123-filtered-color-settings: "color_button", "color_button_text", "color_cart_dot", "color_body_text", "color_price", "color_savings_text", "color_body_bg", "color_footer", "color_footer_text", "color_borders", "color_header", "color_header_text", "color_announcement", "color_announcement_text", "color_image_text", "color_modal_overlays", "color_image_overlay", "color_small_image_bg", "color_large_image_bg", "collection_grid_tint", "color_drawer_background", "color_drawer_border", "color_drawer_text", "color_drawer_button", "color_drawer_button_text";
-}
-
-/*
- Impulse, by Archetype Themes
- http://archetypethemes.co
- */
 /*============================================================================
- #Sass Mixins
- ==============================================================================*/
+  #Sass Mixins
+==============================================================================*/
 .clearfix:after {
   content: "";
   display: table;
@@ -26,6 +14,68 @@
 /*================ Animation related mixins ================*/
 /*================ Functions ================*/
 /*================ Font stack mixins ================*/
+/*================ Animations and keyframes ================*/
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes fadeIn {
+  0%, 35% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes heroContentIn {
+  0%, 35% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+/*================ Overlay ================*/
+/*============================================================================
+  Grid Breakpoints and Class Names
+    - Do not change breakpoint variable names
+    - Medium breakpoint is also set in theme.js.liquid and inline
+    throughout some templates. Be weary of changing unless you know what you're doing.
+==============================================================================*/
+/*================ Color variables ================*/
+/*================ Typography ================*/
+/*============================================================================
+  Animations
+  - $animate_page_transition_style options:
+      page-fade-in-up
+      page-slow-fade
+      page-slide-reveal-across
+      page-slide-reveal-down
+  - $animate_sections_background_style options:
+      fade-in
+      zoom-fade
+      paint-across
+  - $animate_sections_text_style options:
+      fade-in
+      rise-up
+      paint-across
+  - $animate_images_style
+      fade-in
+      zoom-fade
+      paint-across
+==============================================================================*/
+/*================ Drawers ================*/
+/*================ Misc sizing vars ================*/
+/*================ Collapsible icon sizing and animations ================*/
+/*================ Global | Normalize ================*/
 /*================ Animations and keyframes ================*/
 @keyframes spin {
   0% {
@@ -1482,14 +1532,31 @@ hr, .hr--small, .hr--medium, .hr--large {
     border-bottom: 1px solid var(--shopify-editor-setting-color_borders);
   }
 }
-body, input, textarea, button, select {
+body,
+input,
+textarea,
+button,
+select {
   font-size: 13.6px;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Poppins', sans-serif;
   letter-spacing: 0.05em;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeSpeed;
+}
+@media only screen and (min-width: 769px) {
+  body,
+  input,
+  textarea,
+  button,
+  select {
+    font-size: 16px;
+  }
+}
+
+body {
+  font-weight: 500;
 }
 
 @media only screen and (min-width: 769px) {

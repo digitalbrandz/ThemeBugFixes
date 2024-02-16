@@ -1,5 +1,3 @@
-
-<div id="{{ section.settings.customid }}">
 {% if section.settings.space_around %}
   <div class="index-section">
 {% endif %}
@@ -84,21 +82,11 @@
 {% if section.settings.space_around %}
   </div>
 {% endif %}
-</div>
-
-
-
-
 
 {% schema %}
   {
     "name": "Custom content",
     "settings": [
-      {
-        "id": "customid",
-        "type": "text",
-        "label": "Custom Css ID"
- },
       {
         "type": "checkbox",
         "id": "full_width",

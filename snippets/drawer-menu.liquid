@@ -158,11 +158,9 @@
               <div class="grid__item one-half appear-animation appear-delay-{{ animation_row }}">
                 <a href="/account" class="mobile-nav__link">
                   {% if customer %}
-                    <!-- {{ 'layout.customer.account' | t }} -->
-                    Account
+                    {{ 'layout.customer.account' | t }}
                   {% else %}
-                    <!-- {{ 'layout.customer.log_in' | t }}  -->
-                  Login
+                    {{ 'layout.customer.log_in' | t }}
                   {% endif %}
                 </a>
               </div>
@@ -247,10 +245,6 @@
         </li>
       {% endif %}
     </ul>
-{% if settings.favicon %}
-    <div class="drawer_logo">
-      <img src="{{ settings.favicon | img_url: 'grande' }}">
-    </div>
-{% endif %}
+
   </div>
 </div>
